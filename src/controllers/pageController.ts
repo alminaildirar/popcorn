@@ -25,7 +25,7 @@ export const getAddActor: RequestHandler = (req, res) => {
 
 export const getDash: RequestHandler = async (req, res) => {
 
-  console.log("geldi dash")
+  
   const films = await Film.createQueryBuilder("film")
     .leftJoinAndSelect("film.user", "user")
     .leftJoinAndSelect("film.comments", "comments")

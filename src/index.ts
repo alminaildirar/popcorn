@@ -12,6 +12,7 @@ import pageRoute from './routes/pageRoute'
 import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
 import filmRoute from './routes/filmRoute'
+import actorRoute from "./routes/actorRoute";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use('/', pageRoute)
 app.use('/auth', authRoute)
 app.use('/user', userRoute)
 app.use('/film', filmRoute)
+app.use('/actor', actorRoute)
 
 passportStrategyGoogle(passport);
 passportStrategyFacebook(passport);
