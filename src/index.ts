@@ -3,6 +3,10 @@ import {createConnection} from "typeorm";
 import * as dotenv from "dotenv";
 import * as express from "express";
 import * as passport from "passport";
+import passportStrategyGoogle from './services/googleAuth'
+import pageRoute from './routes/pageRoute'
+import authRoute from './routes/authRoute'
+
 
 dotenv.config();
 
@@ -19,7 +23,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.listen(process.env.PORT || 3000, () => {
+app.use('/', pageRoute)
+app.use('/auth', authRoute)
+
+
+
+passportStrategyGoogle(passport);
+
+app.listen(process.env.PORT || 5000, () => {
     console.log(`Server is running.`);
   });
 

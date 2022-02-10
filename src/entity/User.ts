@@ -1,18 +1,31 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, BaseEntity, Column} from "typeorm";
+
+export enum method{
+    LOCAL = 'local',
+    GOOGLE = 'google',
+    FACEBOOK = 'facebook'
+}
+
 
 @Entity()
-export class User {
+export class User extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    firstName: string;
+    @Column({type: "enum", enum: method})
+    method: string;
 
     @Column()
-    lastName: string;
+    username: string;
 
     @Column()
-    age: number;
+    email: string;
+
+    @Column({nullable:true})
+    password: string;
+
+    @Column({nullable:true})
+    likedFilms: string;
 
 }
