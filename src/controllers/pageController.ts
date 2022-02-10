@@ -15,6 +15,14 @@ export const getRegister: RequestHandler = (req, res) => {
   res.render("register");
 };
 
+export const getAddFilm: RequestHandler = (req, res) => {
+  res.render("add-film");
+};
+
+export const getAddActor: RequestHandler = (req, res) => {
+  res.render("add-actor");
+}
+
 export const getDash: RequestHandler = async (req, res) => {
 
   console.log("geldi dash")
