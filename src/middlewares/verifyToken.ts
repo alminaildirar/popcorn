@@ -15,13 +15,14 @@ declare global {
 export const verifyToken: RequestHandler = async(req,res,next) => {
 
     try{
-
+      
          const token = req.cookies.jwt;
 
          if(!token) return res.render('login');
          
          jwt.verify(token,'hush-hush', (err,decoded) => {
              req.userID = decoded.userID
+             
              if(err){
                  res.render('login')
              }

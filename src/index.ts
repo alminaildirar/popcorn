@@ -42,6 +42,7 @@ passportStrategyGoogle(passport);
 passportStrategyFacebook(passport);
 passportStrategyLocal(passport);
 
+
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Server is running.`);
   });

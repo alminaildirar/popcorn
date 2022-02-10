@@ -1,6 +1,7 @@
 import { RequestHandler} from "express";
 import { User } from "../entity/User";
 import { Actor } from "../entity/Actor";
+import { ActorLikes } from "../entity/ActorLikes";
 import * as fs from 'fs'
 
 
@@ -59,3 +60,37 @@ export const addActor: RequestHandler = async (req, res) => {
   
     res.render("actor", { actor, liked, user: currentUser.username });
   };
+
+
+  export const getAllActors: RequestHandler = async (req, res) => {
+
+    const page = req.query.page || 1;
+    const totalFilms = (await Actor.find({ visible: true })).length;
+  
+    const actors = await Actor.createQueryBuilder("actor")
+      .leftJoinAndSelect("actor.user", "user")
+      .leftJoinAndSelect("actor.comments", "comments")
+      .leftJoinAndSelect("actor.likes", "likes")
+      .take(5)
+      .skip((Number(page) - 1) * 5)
+      .where("actor.visible = true")
+      .orderBy("actor.created", "DESC")
+      .getMany();
+  
+    const userlikes = await ActorLikes.createQueryBuilder("actorlikes")
+      .leftJoinAndSelect("actorlikes.actor", "actor")
+      .where("actorlikes.ownerID = :userID", { userID: req.userID })
+      .getMany();
+  
+    const useractorLikes = [];
+    for (let i = 0; i < userlikes.length; i++) {
+      useractorLikes.push(userlikes[i].actor.id);
+    }
+    res.render("actors", {
+      actors,
+      useractorLikes,
+      pages: Math.ceil(totalFilms / 5),
+      current: page,
+    });
+  };
+

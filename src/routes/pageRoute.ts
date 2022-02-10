@@ -1,4 +1,5 @@
 import * as express from 'express'
+import { getAllFilms } from '../controllers/filmController';
 import { getDash, getLogin, getRegister, getAddFilm, getAddActor} from '../controllers/pageController';
 import { verifyToken } from '../middlewares/verifyToken';
 
@@ -7,8 +8,9 @@ const router = express.Router();
 router.get('/', getLogin)
 router.get('/login', getLogin)
 router.get('/register', getRegister)
-router.get('/film/add-film', verifyToken, getAddFilm)
-router.get('/actor/add-actor', verifyToken, getAddActor)
+router.get('/all-films', verifyToken, getAllFilms)
+
+
 router.get('/dash', verifyToken, getDash)
 
 

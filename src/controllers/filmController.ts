@@ -60,3 +60,35 @@ export const addFilm: RequestHandler = async (req, res) => {
   
     res.render("film", { film, liked, user: currentUser.username });
   };
+
+  export const getAllFilms: RequestHandler = async (req, res) => {
+
+    const page = req.query.page || 1;
+    const totalFilms = (await Film.find({ visible: true })).length;
+  
+    const films = await Film.createQueryBuilder("film")
+      .leftJoinAndSelect("film.user", "user")
+      .leftJoinAndSelect("film.comments", "comments")
+      .leftJoinAndSelect("film.likes", "likes")
+      .take(5)
+      .skip((Number(page) - 1) * 5)
+      .where("film.visible = true")
+      .orderBy("film.created", "DESC")
+      .getMany();
+  
+    const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
+      .leftJoinAndSelect("filmlikes.film", "film")
+      .where("filmlikes.ownerID = :userID", { userID: req.userID })
+      .getMany();
+  
+    const userfilmLikes = [];
+    for (let i = 0; i < userlikes.length; i++) {
+      userfilmLikes.push(userlikes[i].film.id);
+    }
+    res.render("films", {
+      films,
+      userfilmLikes,
+      pages: Math.ceil(totalFilms / 5),
+      current: page,
+    });
+  };
