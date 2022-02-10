@@ -1,4 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, BaseEntity, Column, OneToMany} from "typeorm";
+import { Actor } from "./Actor";
 import { Film } from "./Film";
 
 export enum method{
@@ -31,4 +32,7 @@ export class User extends BaseEntity{
 
     @OneToMany(type => Film, film => film.user)
     films: Film[]
+
+    @OneToMany(type => Actor, actor => actor.user)
+    actors: Actor[]
 }
