@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { createUser} from '../controllers/userController';
+import { createUser, logoutUser} from '../controllers/userController';
 
 
 
@@ -8,6 +8,8 @@ const router = express.Router();
 
 
 router.post('/register', createUser)
+router.get('/logout', logoutUser )
+
 
 
 

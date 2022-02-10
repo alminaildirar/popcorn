@@ -27,3 +27,16 @@ export const createUser: RequestHandler = async (req, res) => {
 
     }
   };
+
+
+export const logoutUser: RequestHandler = async (req,res) => {
+  try{
+
+    res.clearCookie('jwt');
+    res.redirect('/login');
+ 
+  }catch(error){
+
+  }
+
+}
