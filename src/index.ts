@@ -5,6 +5,7 @@ import * as express from "express";
 import * as passport from "passport";
 import passportStrategyGoogle from './services/googleAuth'
 import passportStrategyFacebook from './services/facebookAuth'
+import passportStrategyLocal from './services/LocalAuth'
 import pageRoute from './routes/pageRoute'
 import authRoute from './routes/authRoute'
 
@@ -23,14 +24,15 @@ app.use(express.json());
 // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+app.use(passport.initialize());
+
 
 app.use('/', pageRoute)
 app.use('/auth', authRoute)
 
-
-
 passportStrategyGoogle(passport);
 passportStrategyFacebook(passport);
+passportStrategyLocal(passport);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Server is running.`);

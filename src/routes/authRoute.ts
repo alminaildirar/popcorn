@@ -1,5 +1,5 @@
 import * as express from "express";
-import { googleAuthScope, googleAuth, facebookAuth, facebookAuthScope } from "../controllers/authController";
+import { googleAuthScope, googleAuth, facebookAuth, facebookAuthScope, localAuth } from "../controllers/authController";
 import { signJwt } from "../middlewares/signJwt";
 
 const router = express.Router();
@@ -14,6 +14,10 @@ router.get("/google/callback", googleAuth, signJwt)
 //-------------Routers For Facebook Auth----------------------
 router.get("/facebook", facebookAuthScope);
 router.get("/facebook/callback", facebookAuth, signJwt);
+
+//------------ Routers For Local Auth-------------------------
+router.post("/local", localAuth, signJwt);
+
 
 
 const authRouter = router;

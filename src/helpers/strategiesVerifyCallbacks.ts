@@ -1,4 +1,6 @@
 import { User } from "../entity/User";
+import { compare } from "bcrypt";
+
 
 export const googleVerify = async(request, accessToken, refreshToken, profile, done) => {
 
@@ -42,6 +44,34 @@ export const facebookVerify = async(request:any, accessToken:any, refreshToken:a
         
     }catch(error){
         
+    }
+
+}
+
+
+
+export const localVerify = async (username,password,done) => {
+        
+    
+    try{
+        const user = await User.findOne({username})
+        if(!user){
+
+            return done(null,false,{message: 'User not found.'})
+        }
+  
+        await compare(password, user.password, (err,res)=> {
+            
+            if(res){ 
+                return done(null,user) 
+ 
+            }else{
+                return done(null,false)
+            }
+        })
+
+    }catch(err){
+        return done(err,null)
     }
 
 }
