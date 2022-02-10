@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, BaseEntity, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, BaseEntity, Column, OneToMany} from "typeorm";
+import { Film } from "./Film";
 
 export enum method{
     LOCAL = 'local',
@@ -28,4 +29,6 @@ export class User extends BaseEntity{
     @Column({nullable:true})
     likedFilms: string;
 
+    @OneToMany(type => Film, film => film.user)
+    films: Film[]
 }
