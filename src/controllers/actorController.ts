@@ -40,7 +40,7 @@ export const addActor: RequestHandler = async (req, res) => {
   };
 
 
-  export const getActor: RequestHandler = async (req, res) => {
+export const getActor: RequestHandler = async (req, res) => {
     const currentUser = await User.findOne({id: req.userID})
     const actor = await Actor.createQueryBuilder("actor")
       .leftJoinAndSelect("actor.user", "user")
@@ -59,13 +59,13 @@ export const addActor: RequestHandler = async (req, res) => {
     }
   
     res.render("actor", { actor, liked, user: currentUser.username });
-  };
+};
 
 
-  export const getAllActors: RequestHandler = async (req, res) => {
+export const getAllActors: RequestHandler = async (req, res) => {
 
     const page = req.query.page || 1;
-    const totalFilms = (await Actor.find({ visible: true })).length;
+    const totalActors = (await Actor.find({ visible: true })).length;
   
     const actors = await Actor.createQueryBuilder("actor")
       .leftJoinAndSelect("actor.user", "user")
@@ -89,8 +89,30 @@ export const addActor: RequestHandler = async (req, res) => {
     res.render("actors", {
       actors,
       useractorLikes,
-      pages: Math.ceil(totalFilms / 5),
+      pages: Math.ceil(totalActors / 5),
       current: page,
     });
-  };
+};
 
+export const getMyActors: RequestHandler = async (req, res) => {
+  //const currentUser = await User.findOne({id: req.userID})
+  const myActors = await Actor.createQueryBuilder("actor")
+    .leftJoinAndSelect("actor.user", "user")
+    .leftJoinAndSelect("actor.comments", "comments")
+    .leftJoinAndSelect("actor.likes", "likes")
+    .where("actor.user.id = :userID", { userID: req.userID })
+    .orderBy("actor.created", "DESC")
+    .getMany();
+
+  const userlikes = await ActorLikes.createQueryBuilder("actorlikes")
+    .leftJoinAndSelect("actorlikes.actor", "actor")
+    .where("actorlikes.ownerID = :userID", { userID: req.userID })
+    .getMany();
+
+  const useractorLikes = [];
+  for (let i = 0; i < userlikes.length; i++) {
+    useractorLikes.push(userlikes[i].actor.id);
+  }
+
+  res.render("my-actors", { myActors, useractorLikes });
+};
