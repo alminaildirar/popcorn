@@ -8,6 +8,7 @@ import passportStrategyFacebook from './services/facebookAuth'
 import passportStrategyLocal from './services/LocalAuth'
 import pageRoute from './routes/pageRoute'
 import authRoute from './routes/authRoute'
+import userRoute from './routes/userRoute'
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(passport.initialize());
 
 app.use('/', pageRoute)
 app.use('/auth', authRoute)
+app.use('/user', userRoute)
 
 passportStrategyGoogle(passport);
 passportStrategyFacebook(passport);

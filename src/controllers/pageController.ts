@@ -7,3 +7,11 @@ export const getLogin: RequestHandler = (req, res) => {
     // }
     res.render("login");
   };
+
+
+  export const getRegister: RequestHandler = (req, res) => {
+    res.render("register");
+  };
+
+
+  
