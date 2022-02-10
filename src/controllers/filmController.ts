@@ -38,9 +38,9 @@ export const addFilm: RequestHandler = async (req, res) => {
       //YÖNLENDİRME DEĞİŞECEK!!!
       res.redirect("/dash");
     } catch (error) {}
-  };
+};
 
-  export const getFilm: RequestHandler = async (req, res) => {
+export const getFilm: RequestHandler = async (req, res) => {
     const currentUser = await User.findOne({id: req.userID})
     const film = await Film.createQueryBuilder("film")
       .leftJoinAndSelect("film.user", "user")
@@ -59,7 +59,7 @@ export const addFilm: RequestHandler = async (req, res) => {
     }
   
     res.render("film", { film, liked, user: currentUser.username });
-  };
+};
 
   export const getAllFilms: RequestHandler = async (req, res) => {
 
@@ -91,4 +91,27 @@ export const addFilm: RequestHandler = async (req, res) => {
       pages: Math.ceil(totalFilms / 5),
       current: page,
     });
-  };
+};
+
+export const getMyFilms: RequestHandler = async (req, res) => {
+  //const currentUser = await User.findOne({id: req.userID})
+  const myFilms = await Film.createQueryBuilder("film")
+    .leftJoinAndSelect("film.user", "user")
+    .leftJoinAndSelect("film.comments", "comments")
+    .leftJoinAndSelect("film.likes", "likes")
+    .where("film.user.id = :userID", { userID: req.userID })
+    .orderBy("film.created", "DESC")
+    .getMany();
+
+  const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
+    .leftJoinAndSelect("filmlikes.film", "film")
+    .where("filmlikes.ownerID = :userID", { userID: req.userID })
+    .getMany();
+
+  const userfilmLikes = [];
+  for (let i = 0; i < userlikes.length; i++) {
+    userfilmLikes.push(userlikes[i].film.id);
+  }
+
+  res.render("my-films", { myFilms, userfilmLikes });
+};

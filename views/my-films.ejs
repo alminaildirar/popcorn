@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/images/popcorn.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+  <title>Popcorn</title>
+</head>
+<body>
+  <nav class="container">
+    <div class="logo-section">
+      <div class="logo">
+        <a href="/dash"><img src="/images/popcorn.png" alt="" /></a>
+      </div>
+      <div class="header-btns">
+        <a class="toggle" href="javascript:void(0);"><i class="fas fa-bars"></i></a>
+      </div>
+    </div>
+    <div class="menu-section">
+      <div class="menu">
+        <ul>
+          <li><a href="/dash">Home</a></li>
+          <li><a href="/film/my-films">My Films</a></li>
+          <li><a href="/actor/my-actors">My Actors</a></li>
+          <li><a href="/film/add-film">Add Film</a></li>
+          <li><a href="/actor/add-actor">Add Actor</a></li>
+          <li><a href="/film/films">All Films</a></li>
+          <li><a href="/actor/actors">All Actors</a></li>
+          <li><a href="/user/logout">logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    
+    <% for(let i=0; i<myFilms.length; i++) { %>
+    <div class="film-main">
+
+      <div class="film-content">
+        <a class="film-img" href="/film/<%=myFilms[i].id %>"><img src="<%= myFilms[i].image %>" alt=""></a>
+        <div class="film-text">
+          <a class="film-title" href="/film/<%=myFilms[i].id %>"><%= myFilms[i].name %></a>
+          <p><%= myFilms[i].description.substring(0, 600) + "..." %></p>
+          <a href="" class="user">@<%= myFilms[i].user.username %></a>
+        </div>
+      </div>
+      <div class="btns">
+
+        <% if(userfilmLikes.includes(myFilms[i].id)) { %>
+        <a href="/film/re-like/<%=myFilms[i].id %>/all" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= myFilms[i].likes.length %></span></a>
+        <% } %>
+        <% if(!userfilmLikes.includes(myFilms[i].id)) { %>
+        <a href="/film/like/<%=myFilms[i].id %>/all" class="fav btn-act"><i class="far fa-heart"></i> <span><%= myFilms[i].likes.length %></span></a>
+        <% } %>
+        <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= myFilms[i].comments.length %></span></a>
+      </div>
+      
+    </div>
+    <% } %>
+    
+  </div>
+  <div>
+
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

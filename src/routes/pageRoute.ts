@@ -8,8 +8,6 @@ const router = express.Router();
 router.get('/', getLogin)
 router.get('/login', getLogin)
 router.get('/register', getRegister)
-router.get('/all-films', verifyToken, getAllFilms)
-
 
 router.get('/dash', verifyToken, getDash)
 
