@@ -1,5 +1,5 @@
 import * as express from "express";
-import { googleAuthScope, googleAuth } from "../controllers/authController";
+import { googleAuthScope, googleAuth, facebookAuth, facebookAuthScope } from "../controllers/authController";
 import { signJwt } from "../middlewares/signJwt";
 
 const router = express.Router();
@@ -10,6 +10,10 @@ const router = express.Router();
 //-------------Routers For Google Auth------------------------
 router.get("/google", googleAuthScope )
 router.get("/google/callback", googleAuth, signJwt)
+
+//-------------Routers For Facebook Auth----------------------
+router.get("/facebook", facebookAuthScope);
+router.get("/facebook/callback", facebookAuth, signJwt);
 
 
 const authRouter = router;

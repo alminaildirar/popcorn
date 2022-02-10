@@ -6,6 +6,7 @@
       "@types/express": "^4.17.13",
       "@types/jsonwebtoken": "^8.5.8",
       "@types/node": "^8.0.29",
+      "@types/passport-facebook": "^2.1.11",
       "nodemon": "^2.0.15",
       "ts-node": "3.3.0",
       "typescript": "3.3.3333"
@@ -19,6 +20,7 @@
       "jsonwebtoken": "^8.5.1",
       "mysql": "^2.14.1",
       "passport": "^0.5.2",
+      "passport-facebook": "^3.0.0",
       "passport-google-oauth2": "^0.2.0",
       "reflect-metadata": "^0.1.10",
       "typeorm": "0.2.41"

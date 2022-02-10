@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import * as express from "express";
 import * as passport from "passport";
 import passportStrategyGoogle from './services/googleAuth'
+import passportStrategyFacebook from './services/facebookAuth'
 import pageRoute from './routes/pageRoute'
 import authRoute from './routes/authRoute'
 
@@ -29,6 +30,7 @@ app.use('/auth', authRoute)
 
 
 passportStrategyGoogle(passport);
+passportStrategyFacebook(passport);
 
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Server is running.`);
