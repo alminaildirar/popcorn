@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
+import * as cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import * as express from "express";
 import * as passport from "passport";
@@ -24,7 +25,7 @@ app.use(express.static("public"));
 app.use(express.json());
 // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 app.use(passport.initialize());
 
 
