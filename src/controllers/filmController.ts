@@ -9,7 +9,7 @@ import { FilmComments } from "../entity/FilmComments";
 export const addFilm: RequestHandler = async (req, res) => {
     try {
     
-        console.log('geldi')
+      
       if (!req.userID) res.redirect("/login");
       const currentUser = await User.findOne({ id: req.userID });
   
@@ -38,4 +38,25 @@ export const addFilm: RequestHandler = async (req, res) => {
       //YÖNLENDİRME DEĞİŞECEK!!!
       res.redirect("/dash");
     } catch (error) {}
+  };
+
+  export const getFilm: RequestHandler = async (req, res) => {
+    const currentUser = await User.findOne({id: req.userID})
+    const film = await Film.createQueryBuilder("film")
+      .leftJoinAndSelect("film.user", "user")
+      .leftJoinAndSelect("film.comments", "comments.content")
+      .leftJoinAndSelect("film.likes", "likes")
+      .where("film.id = :filmID", { filmID: req.params.id })
+      .getOne();
+  
+    if (!film) {
+      return res.redirect("/dash");
+    }
+  
+    let liked = false;
+    for (let i = 0; i < film.likes.length; i++) {
+      film.likes[i].ownerID == req.userID ? (liked = true) : (liked = false);
+    }
+  
+    res.render("film", { film, liked, user: currentUser.username });
   };

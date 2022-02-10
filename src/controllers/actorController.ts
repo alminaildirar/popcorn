@@ -37,3 +37,25 @@ export const addActor: RequestHandler = async (req, res) => {
       res.redirect("/dash");
     } catch (error) {}
   };
+
+
+  export const getActor: RequestHandler = async (req, res) => {
+    const currentUser = await User.findOne({id: req.userID})
+    const actor = await Actor.createQueryBuilder("actor")
+      .leftJoinAndSelect("actor.user", "user")
+      .leftJoinAndSelect("actor.comments", "comments.content")
+      .leftJoinAndSelect("actor.likes", "likes")
+      .where("actor.id = :actorID", { actorID: req.params.id })
+      .getOne();
+  
+    if (!actor) {
+      return res.redirect("/dash");
+    }
+  
+    let liked = false;
+    for (let i = 0; i < actor.likes.length; i++) {
+      actor.likes[i].ownerID == req.userID ? (liked = true) : (liked = false);
+    }
+  
+    res.render("actor", { actor, liked, user: currentUser.username });
+  };

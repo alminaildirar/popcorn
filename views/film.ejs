@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/images/popcorn.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+  <title>Popcorn</title>
+</head>
+<body>
+  <nav class="container">
+    <div class="logo-section">
+      <div class="logo">
+        <a href=""><img src="/images/popcorn.png" alt="" /></a>
+      </div>
+      <div class="header-btns">
+        <a class="toggle" href="javascript:void(0);"><i class="fas fa-bars"></i></a>
+      </div>
+    </div>
+    <div class="menu-section">
+      <div class="menu">
+        <ul>
+            <li><a href="/dash">Home</a></li>
+            <li><a href="/film/my-films">My Films</a></li>
+            <li><a href="/actor/my-actors">My Actors</a></li>
+            <li><a href="/film/add-film">Add Film</a></li>
+            <li><a href="/actor/add-actor">Add Actor</a></li>
+            <li><a href="/user/logout">logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container film">
+    <h1><%= film.name %></h1>
+    <div class="film-main">
+      <div class="film-pos">
+        <img src="<%= film.image %>" alt="">
+      </div>
+      <div class="btns">
+        
+        <% if(liked == true) {  %>
+        <a href="/film/re-like/<%=film.id %>/single" class="fav like btn-act"><i class="fas fa-heart"></i><span><%= film.likes.length %></span></a>
+        <% } %>
+        <% if(liked == false) {  %>
+        <a href="/film/like/<%=film.id %>/single" class="fav btn-act"><i class="far fa-heart"></i><span><%= film.likes.length %></span></a>
+        <% } %>
+        <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i><span><%= film.comments.length %></span></a>
+        
+      </div>
+      <p>
+        <%= film.description %>
+    </p>
+    </div>
+    
+    <div id="comment" class="comment-block">
+      
+      <form method='POST' action="/film/add-comment/<%=film.id%>">
+        <textarea name="content" id="" rows="3" maxlength="200">Your Comment</textarea>
+        <button class="add-comment">Submit</button>
+      </form>
+      <ul class="comment-list">
+        <% for(let i=0; i < film.comments.length; i++) { %>
+        <li>
+          <div class="comment-header">
+            <a href=""><%= film.comments[i].author %></a>
+            <% if(film.comments[i].author === user) { %>
+              <a href="/film/deleteComment/<%= film.comments[i].id %>/<%=film.id %>/?_method=DELETE" class="delete-btn pbtn" onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash"></i></a>
+              <% } %>
+          </div>
+          <p><%= film.comments[i].content %></p>
+        </li>
+        <% } %>
+
+      </ul>
+    </div>
+  </div>
+  <script src="/js/script.js"></script>
+</body>
+</html>

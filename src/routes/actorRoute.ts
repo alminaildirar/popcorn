@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { verifyToken } from '../middlewares/verifyToken';
-import { addActor} from '../controllers/actorController'
+import { addActor, getActor} from '../controllers/actorController'
 
 
 
@@ -10,6 +10,7 @@ const router = express.Router();
 
 
 router.post('/add-actor', verifyToken, addActor)
+router.get('/:id', verifyToken, getActor)
 router.get('/all-actor', verifyToken)
 
 

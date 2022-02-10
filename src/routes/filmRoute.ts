@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { verifyToken } from '../middlewares/verifyToken';
-import { addFilm } from '../controllers/filmController';
+import { addFilm, getFilm } from '../controllers/filmController';
 
 
 
@@ -10,6 +10,7 @@ const router = express.Router();
 
 
 router.post('/add-film', verifyToken, addFilm)
+router.get('/:id', verifyToken, getFilm)
 router.get('/all-film', verifyToken)
 
 
