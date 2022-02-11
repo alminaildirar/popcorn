@@ -36,12 +36,12 @@
   </nav>
   <div class="container">
     <div class="add">
-      <h1>Add Film</h1>
+      <h1>Update Film</h1>
     <div id="comment" class="add-block">
-      <form method="POST" action="/film/add-film" enctype="multipart/form-data">
-        <div id="preview"></div>
+      <form method="POST" action="/film/update/<%= film.id %>/?_method=PUT" enctype="multipart/form-data">
+        <div id="preview" ></div>
         <div class="form-text">
-          <input type="text" name="name"class="item-name" placeholder="Film Name" >
+          <input type="text" name="name"class="item-name" placeholder="<%= film.name %>" >
           <label class="file">
             <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
               <span class="file-custom"></span>
@@ -51,8 +51,8 @@
             <label for="lock"><i></i></label>
           </div>
         </div>
-        <textarea name="description" id="" rows="10">Film Description</textarea>
-        <button class="add-comment">ADD</button>
+        <textarea name="description" id="" rows="10"><%= film.description %></textarea>
+        <button class="add-comment">Submit</button>
       </form>
     </div>
     </div>
