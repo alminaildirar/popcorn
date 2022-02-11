@@ -68,7 +68,7 @@
           <div class="comment-header">
             <a href=""><%= actor.comments[i].author %></a>
             <% if(actor.comments[i].author === user) { %>
-              <a href="/actor/deleteComment/<%= film.comments[i].id %>/<%=film.id %>/?_method=DELETE" class="delete-btn pbtn" onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash"></i></a>
+              <a href="/actor/deleteComment/<%= actor.comments[i].id %>/<%=actor.id %>/?_method=DELETE" class="delete-btn pbtn" onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash"></i></a>
               <% } %>
           </div>
           <p><%= actor.comments[i].content %></p>

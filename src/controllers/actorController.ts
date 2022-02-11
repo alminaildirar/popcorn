@@ -2,6 +2,7 @@ import { RequestHandler} from "express";
 import { User } from "../entity/User";
 import { Actor } from "../entity/Actor";
 import { ActorLikes } from "../entity/ActorLikes";
+import { ActorComments } from "../entity/ActorComments";
 import * as fs from 'fs'
 
 
@@ -159,4 +160,23 @@ export const relikeActor: RequestHandler = async (req, res) => {
 
   res.redirect("/actor/my-actors");
 };
+
+export const addActorComment:RequestHandler = async(req,res) => {
+    
+  const currentUser = await User.findOne({id: req.userID})
+  
+  const currentActor = await Actor.findOne({id: Number(req.params.id)})
+  const {content} = req.body
+
+  const comment = ActorComments.create({
+      content,
+      author: currentUser.username,
+      actor: currentActor
+  })
+
+  await ActorComments.save(comment)
+
+  res.redirect(`/actor/${req.params.id}`)
+
+}
 
