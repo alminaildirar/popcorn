@@ -189,5 +189,42 @@ export const deleteCommentFilm:RequestHandler = async (req, res) => {
 
 };
 
+export const updateFilm: RequestHandler = async (req, res) => {
+  
+  const uploadDir = "public/uploads"
+  if(!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir)
+  }
+
+  const imageName  = req.files.image['name'];
+  const image = req.files.image['data']
+
+  fs.writeFileSync(uploadDir + '/' + imageName,image);
+  const imageurl = '/uploads/' + imageName
+
+
+  const filmToBeCheck = await Film.createQueryBuilder("film")
+    .leftJoinAndSelect("film.user", "user")
+    .where("film.id = :filmID", { filmID: req.params.id })
+    .getOne();
+
+  if (filmToBeCheck.user.id === req.userID) {
+    const { name, description } = req.body;
+    let visibility;
+    req.body.visibility ? (visibility = false) : (visibility = true);
+
+    const film = await Film.findOne({ id: Number(req.params.id) });
+    film.name = name;
+    film.description = description;
+    film.visible = visibility;
+    film.image = imageurl;
+    await Film.save(film);
+
+    return res.redirect("/film/my-films");
+  }
+
+  return res.redirect("/dash");
+};
+
 
 
