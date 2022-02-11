@@ -39,15 +39,20 @@
       <h1>Add Film</h1>
     <div id="comment" class="add-block">
       <form method="POST" action="/film/add-film" enctype="multipart/form-data">
-        <input type="text" name="name"class="item-name" placeholder="Film Name">
-        <label class="file">
-          <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
-            <span class="file-custom"></span>
-        </label>
-        <label for="visibility"><input type="checkbox" name="visibility" id="visibility"> Is Visible</label>
         <div id="preview"></div>
+        <div class="form-text">
+          <input type="text" name="name"class="item-name" placeholder="Film Name" >
+          <label class="file">
+            <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
+              <span class="file-custom"></span>
+          </label>
+          <div class="lock-box">
+            <input type="checkbox" name="visibility" id="lock">
+            <label for="lock"><i></i></label>
+          </div>
+        </div>
         <textarea name="description" id="" rows="10">Film Description</textarea>
-        <button class="add-comment">Submit</button>
+        <button class="add-comment">ADD</button>
       </form>
     </div>
     </div>

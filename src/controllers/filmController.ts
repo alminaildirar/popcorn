@@ -26,7 +26,7 @@ export const addFilm: RequestHandler = async (req, res) => {
   
       const { name, description } = req.body;
       let visibility;
-      req.body.visibility ? (visibility = true) : (visibility = false);
+      req.body.visibility ? (visibility = false) : (visibility = true);
       const film = await Film.create({
         name,
         description,

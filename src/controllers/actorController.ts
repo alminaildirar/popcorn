@@ -25,7 +25,7 @@ export const addActor: RequestHandler = async (req, res) => {
   
       const { name, description } = req.body;
       let visibility;
-      req.body.visibility ? (visibility = true) : (visibility = false);
+      req.body.visibility ? (visibility = false) : (visibility = true);
       const actor = await Actor.create({
         name,
         description,
@@ -60,7 +60,6 @@ export const getActor: RequestHandler = async (req, res) => {
   
     res.render("actor", { actor, liked, user: currentUser.username });
 };
-
 
 export const getAllActors: RequestHandler = async (req, res) => {
 
@@ -116,3 +115,4 @@ export const getMyActors: RequestHandler = async (req, res) => {
 
   res.render("my-actors", { myActors, useractorLikes });
 };
+

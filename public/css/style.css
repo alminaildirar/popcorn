@@ -149,11 +149,14 @@ nav.responsive .menu-section{
   color: #111827;
 }
 .comment-block {
-  padding: 20px;
+  padding: 30px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   width: 100%;
+}
+#comment {
+  padding: 20px 0;
 }
 #comment h3{
   width: 100%;
@@ -162,8 +165,14 @@ nav.responsive .menu-section{
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.form-text {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 #comment textarea{
   width: 100%;
@@ -216,12 +225,19 @@ textarea {
   padding: 10px 20px;
 }
 .add{
-  padding: 30px 0;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -webkit-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -o-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    -ms-box-shadow: 0 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
 }
 
 .item-name {
-  margin: 15px 0;
-  width: 40%;
+  margin: 20px 0;
+  width: 90%;
   height: 60px;
   background-color: #e5ebf5;
   border: solid #e5ebf5 2px;
@@ -245,14 +261,15 @@ textarea {
   margin: 50px auto;
 }
 #preview {
-  width: 100%;
+  width: 33%;
   position: relative;
   overflow: hidden;
-  height: 300px;
+  height: 500px;
   margin-bottom: 20px;
   background-color: #e5ebf5;
   border: 8px solid #fff;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
 }
 #preview:after {
   content: 'Preview';
@@ -273,6 +290,7 @@ textarea {
   transform: translate(-50%, -50%);
   max-width: 100%;
   min-height: 100%;
+  border-radius: 20px;
 }
 .file {
   position: relative;
@@ -280,7 +298,8 @@ textarea {
   cursor: pointer;
   height: 60px;
   border-radius: 8px;
-  width: 40%;
+  width: 90%;
+  margin: 20px 0;
 }
 .file input {
   filter: alpha(opacity=0);
@@ -379,10 +398,10 @@ textarea {
     justify-content: space-between;
   }
   .logo-section {
-    width: 25%;
+    width: 15%;
   }
   .logo-section img {
-    width: 70%;
+    width: 100%;
   }
   .header-btns{
     display: none;
@@ -391,7 +410,7 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 60%;
+    width: 82%;
     background: transparent;
   }
   .menu ul {
@@ -483,4 +502,87 @@ textarea {
 .update-btn:hover {
   color: orange;
   background: white;
+}
+
+/*Input styles*/
+.lock-box {
+  margin: 50px 0;
+  margin-left: 75%;
+}
+.lock-box input[type="checkbox"] { display: none; }
+
+.lock-box input[type="checkbox"] + label {
+  display: block;
+  margin-top: 9px;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.lock-box input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 30px;
+  border-radius: 30px 30px 0 0;
+  border: solid #2ecc71;
+  border-width: 7px 7px 0 7px;
+  position: absolute;
+  left: 5px;
+  top: -29px;
+  -webkit-transform-origin: 1px 100%;
+  -ms-transform-origin: 1px 100%;
+  transform-origin: 1px 100%;
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -webkit-transition: all .12s;
+  transition: all .12s;
+}
+
+.lock-box input[type="checkbox"] + label i {
+  display: inline-block;
+  vertical-align: top;
+  width: 60px;
+  height: 45px;
+  background: #2ecc71;
+  position: relative;
+  -webkit-transition: all .12s;
+  transition: all .12s;
+}
+
+.lock-box input[type="checkbox"] + label i:before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #484848;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  margin-left: -2px;
+}
+.lock-box input[type="checkbox"] + label i:after {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 4px;
+  background: #484848;
+  border-radius: 0 0 50% 50%;
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  margin-left: -1px;
+}
+
+.lock-box input[type="checkbox"]:checked + label i {
+  background: #fb4f4f;
+}
+
+.lock-box input[type="checkbox"]:checked + label:before {
+  border-color: #fb4f4f;
+  -webkit-transform: rotateY(0);
+  transform: rotateY(0);
 }
