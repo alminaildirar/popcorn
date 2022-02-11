@@ -226,5 +226,20 @@ export const updateActor: RequestHandler = async (req, res) => {
   return res.redirect("/dash");
 };
 
+export const deleteActor: RequestHandler = async (req, res) => {
+  const actorToBeCheck = await Actor.createQueryBuilder("actor")
+    .leftJoinAndSelect("actor.user", "user")
+    .where("actor.id = :actorID", { actorID: req.params.id })
+    .getOne();
+
+  if (actorToBeCheck.user.id === req.userID) {
+    const actor = await Actor.findOne({ id: Number(req.params.id) });
+    await Actor.remove(actor);
+    return res.redirect("/actor/my-actors");
+  }
+
+  return res.redirect("/dash");
+};
+
 
 
