@@ -178,4 +178,16 @@ export const addFilmComment:RequestHandler = async(req,res) => {
 
   res.redirect(`/film/${req.params.id}`)
 
-}
+};
+
+export const deleteCommentFilm:RequestHandler = async (req, res) => {
+  
+  const commentToBeDeleted = await FilmComments.findOne({ id: Number(req.params.id)})
+  await FilmComments.remove(commentToBeDeleted);
+
+  res.redirect(`/film/${req.params.filmID}`)
+
+};
+
+
+

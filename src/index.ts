@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import * as express from "express";
 import * as passport from "passport";
 import * as fileUpload from 'express-fileupload'
+import * as methodOverride from 'method-override'
 import passportStrategyGoogle from './services/googleAuth'
 import passportStrategyFacebook from './services/facebookAuth'
 import passportStrategyLocal from './services/LocalAuth'
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(fileUpload())
+app.use(methodOverride('_method', {methods:['POST','GET']}))
 
 
 app.use('/', pageRoute)
