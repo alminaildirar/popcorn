@@ -35,6 +35,12 @@
     </div>
   </nav>
   <div class="container">
+    <% if(locals.errors){ %>  
+      <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%= locals.errors %>
+      </div>
+      <% } %>  
     <div class="add">
       <h1>Add Film</h1>
     <div id="comment" class="add-block">
@@ -51,7 +57,7 @@
             <label for="lock"><i></i></label>
           </div>
         </div>
-        <textarea name="description" id="" rows="10">Film Description</textarea>
+        <textarea name="description" id="" rows="10" placeholder="Film Description"></textarea>
         <button class="add-comment">ADD</button>
       </form>
     </div>
