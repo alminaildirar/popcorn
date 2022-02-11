@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { verifyToken } from '../middlewares/verifyToken';
-import { addFilm, getFilm, getAllFilms, getMyFilms, likeFilm, relikeFilm, addFilmComment, deleteCommentFilm, updateFilm} from '../controllers/filmController';
+import { addFilm, getFilm, getAllFilms, getMyFilms, likeFilm, relikeFilm, addFilmComment, deleteCommentFilm, updateFilm, deleteFilm} from '../controllers/filmController';
 import { getAddFilm, getFilmEditPage } from '../controllers/pageController';
 
 
@@ -20,6 +20,7 @@ router.post('/add-comment/:id', verifyToken, addFilmComment)
 router.delete('/deleteComment/:id/:filmID',verifyToken, deleteCommentFilm)
 router.get('/update-film/:id',verifyToken, getFilmEditPage)
 router.put('/update/:id', verifyToken, updateFilm)
+router.delete('/delete/:id/',verifyToken, deleteFilm)
 
 
 

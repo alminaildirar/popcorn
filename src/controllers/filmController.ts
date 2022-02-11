@@ -226,5 +226,18 @@ export const updateFilm: RequestHandler = async (req, res) => {
   return res.redirect("/dash");
 };
 
+export const deleteFilm: RequestHandler = async (req, res) => {
+  const filmToBeCheck = await Film.createQueryBuilder("film")
+    .leftJoinAndSelect("film.user", "user")
+    .where("film.id = :filmID", { filmID: req.params.id })
+    .getOne();
 
+  if (filmToBeCheck.user.id === req.userID) {
+    const film = await Film.findOne({ id: Number(req.params.id) });
+    await Film.remove(film);
+    return res.redirect("/film/my-films");
+  }
+
+  return res.redirect("/dash");
+};
 

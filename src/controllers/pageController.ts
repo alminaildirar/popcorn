@@ -76,17 +76,12 @@ export const getFilmEditPage:RequestHandler = async (req,res) => {
   
   const film = await Film.findOne({id: Number(req.params.id)})
   res.render("update-film", {film})
-    
-  
-  
-  }
 
-  
+}
+
 export const getActorEditPage:RequestHandler = async (req,res) => {
   
   const actor = await Actor.findOne({id: Number(req.params.id)})
   res.render("update-actor", {actor})
-    
-  
-  
+
   }
