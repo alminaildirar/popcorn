@@ -1,6 +1,6 @@
 import * as express from 'express'
 import { verifyToken } from '../middlewares/verifyToken';
-import { addFilm, getFilm, getAllFilms, getMyFilms, likeFilm, relikeFilm} from '../controllers/filmController';
+import { addFilm, getFilm, getAllFilms, getMyFilms, likeFilm, relikeFilm, addFilmComment} from '../controllers/filmController';
 import { getAddFilm } from '../controllers/pageController';
 import { RequestHandler } from 'express';
 
@@ -16,6 +16,7 @@ router.get('/add-film', verifyToken, getAddFilm)
 router.post('/add-film', verifyToken, addFilm)
 router.get('/like/:id/:src', verifyToken, likeFilm)
 router.get('/re-like/:id/:src', verifyToken, relikeFilm)
+router.post('/add-comment/:id', verifyToken, addFilmComment)
 
 
 

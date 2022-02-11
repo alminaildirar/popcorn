@@ -160,3 +160,22 @@ export const relikeFilm: RequestHandler = async (req, res) => {
 
   res.redirect("/film/my-films");
 };
+
+export const addFilmComment:RequestHandler = async(req,res) => {
+    
+  const currentUser = await User.findOne({id: req.userID})
+  
+  const currentFilm = await Film.findOne({id: Number(req.params.id)})
+  const {content} = req.body
+
+  const comment = FilmComments.create({
+      content,
+      author: currentUser.username,
+      film: currentFilm
+  })
+
+  await FilmComments.save(comment)
+
+  res.redirect(`/film/${req.params.id}`)
+
+}
