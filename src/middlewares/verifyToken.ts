@@ -20,7 +20,7 @@ export const verifyToken: RequestHandler = async(req,res,next) => {
 
          if(!token) return res.render('login');
          
-         jwt.verify(token,'hush-hush', (err,decoded) => {
+         jwt.verify(token, process.env.TOKEN_SECRET, (err,decoded) => {
              req.userID = decoded.userID
              
              if(err){
