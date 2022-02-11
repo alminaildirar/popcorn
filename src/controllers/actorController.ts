@@ -189,5 +189,42 @@ export const deleteCommentActor:RequestHandler = async (req, res) => {
 
 };
 
+export const updateActor: RequestHandler = async (req, res) => {
+  
+  const uploadDir = "public/uploads"
+  if(!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir)
+  }
+
+  const imageName  = req.files.image['name'];
+  const image = req.files.image['data']
+
+  fs.writeFileSync(uploadDir + '/' + imageName,image);
+  const imageurl = '/uploads/' + imageName
+
+
+  const actorToBeCheck = await Actor.createQueryBuilder("actor")
+    .leftJoinAndSelect("actor.user", "user")
+    .where("actor.id = :actorID", { actorID: req.params.id })
+    .getOne();
+
+  if (actorToBeCheck.user.id === req.userID) {
+    const { name, description } = req.body;
+    let visibility;
+    req.body.visibility ? (visibility = false) : (visibility = true);
+
+    const actor = await Actor.findOne({ id: Number(req.params.id) });
+    actor.name = name;
+    actor.description = description;
+    actor.visible = visibility;
+    actor.image = imageurl;
+    await Actor.save(actor);
+
+    return res.redirect("/actor/my-actors");
+  }
+
+  return res.redirect("/dash");
+};
+
 
 
