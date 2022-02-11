@@ -3,9 +3,6 @@ import { verifyToken } from '../middlewares/verifyToken';
 import { addActor, getActor, getAllActors, getMyActors, likeActor, relikeActor, addActorComment, deleteCommentActor, updateActor, deleteActor} from '../controllers/actorController'
 import { getActorEditPage, getAddActor } from '../controllers/pageController';
 
-
-
-
 //http://localhost:5000//actor/
 const router = express.Router();
 
@@ -20,12 +17,7 @@ router.delete('/deleteComment/:id/:actorID',verifyToken, deleteCommentActor)
 router.get('/update-actor/:id',verifyToken, getActorEditPage )
 router.put('/update/:id', verifyToken, updateActor)
 router.delete('/delete/:id/',verifyToken, deleteActor)
-
 router.get('/:id', verifyToken, getActor)
-
-
-
-
 
 const actorRouter = router;
 export default actorRouter;

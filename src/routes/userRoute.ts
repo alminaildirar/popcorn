@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { createUser, logoutUser} from '../controllers/userController';
+import { registrationValidation, checkErrorsForRegister  } from '../middlewares/registerValidation';
 
 
 
@@ -7,7 +8,7 @@ import { createUser, logoutUser} from '../controllers/userController';
 const router = express.Router();
 
 
-router.post('/register', createUser)
+router.post('/register', registrationValidation, checkErrorsForRegister, createUser)
 router.get('/logout', logoutUser )
 
 

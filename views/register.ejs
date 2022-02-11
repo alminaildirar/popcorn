@@ -12,6 +12,15 @@
 <body>
   
   <main>
+
+    <% if(locals.errors){ %>
+      <% for(let i=0; i < locals.errors.length; i++){ %>
+      <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%= locals.errors[i] %>
+      </div>
+      <% } %> 
+    <% } %>
     <div class="logo">
       <img src="/images/popcorn.png" alt="">
     </div>
@@ -21,12 +30,9 @@
       <input type="email" name="email" class="client-info" placeholder="Email">
       <input type="username" name="username" class="client-info" placeholder="User Name">
       <input type="password" name="password" class="client-info" placeholder="Password">
-      <input type="confirm_password" name="confirm_password" class="client-info" placeholder="Password Reply">
+      <input type="password" name="confirm_password" class="client-info" placeholder="Password Reply">
       <input type="submit"  id="signin-button" value="Register" />
-      <% if(locals.message) {  %>
-        <p><%= message %></p>
-             
-        <% } %>
+
     </form>
       <div id="other-option-wrapper">
         <span class="line"></span>
@@ -51,5 +57,6 @@
     </div>
     <div class="go-register"><a href="/login">Already have an account?</a></div>
   </main>
+    <script src="/js/script2.js"></script>
 </body>
 </html>
