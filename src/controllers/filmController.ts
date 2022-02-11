@@ -115,3 +115,22 @@ export const getMyFilms: RequestHandler = async (req, res) => {
 
   res.render("my-films", { myFilms, userfilmLikes });
 };
+
+export const likeFilm: RequestHandler = async (req, res) => {
+  const currentFilm = await Film.findOne({ id: Number(req.params.id) });
+
+  const like = await FilmLikes.create({
+    ownerID: req.userID,
+    film: currentFilm,
+  });
+
+  await FilmLikes.save(like);
+
+  if (req.params.src === "all") {
+    return res.redirect("/film/films");
+  } else if (req.params.src === "single") {
+    return res.redirect(`/film/${req.params.id}`);
+  }
+
+  res.redirect("/film/my-films");
+};
