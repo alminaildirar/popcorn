@@ -47,15 +47,24 @@
           <a href="" class="user">@<%= myActors[i].user.username %></a>
         </div>
       </div>
-      <div class="btns">
+      <div class="process">
+        <div class="btns">
 
-        <% if(useractorLikes.includes(myActors[i].id)) { %>
-        <a href="/actor/re-like/<%=myActors[i].id %>/all" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= myActors[i].likes.length %></span></a>
-        <% } %>
-        <% if(!useractorLikes.includes(myActors[i].id)) { %>
-        <a href="/actor/like/<%=myActors[i].id %>/all" class="fav btn-act"><i class="far fa-heart"></i> <span><%= myActors[i].likes.length %></span></a>
-        <% } %>
-        <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= myActors[i].comments.length %></span></a>
+          <% if(useractorLikes.includes(myActors[i].id)) { %>
+          <a href="/actor/re-like/<%=myActors[i].id %>/my" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= myActors[i].likes.length %></span></a>
+          <% } %>
+          <% if(!useractorLikes.includes(myActors[i].id)) { %>
+          <a href="/actor/like/<%=myActors[i].id %>/my" class="fav btn-act"><i class="far fa-heart"></i> <span><%= myActors[i].likes.length %></span></a>
+          <% } %>
+          <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= myActors[i].comments.length %></span></a>
+          <% if(myActors[i].visible== false) { %>
+            <a href="" class="btn-act"><i class="fas fa-lock"></i></a>
+          <% } %>
+        </div>
+        <div class="process-btns">
+          <a href="/actor/update-film/<%=myActors[i].id %>" class="update-btn pbtn"> Update</a>
+          <a href="/actor/delete/<%=myActors[i].id %>/?_method=DELETE" class="delete-btn pbtn" onclick="return confirm('ARE YOU SURE?')"><i class="fas fa-trash"></i></a>
+        </div>
       </div>
       
     </div>
