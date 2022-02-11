@@ -3,6 +3,7 @@ import { Actor } from "../entity/Actor";
 import { Film } from "../entity/Film";
 import { FilmLikes } from "../entity/FilmLikes";
 import { ActorLikes } from "../entity/ActorLikes";
+import { User } from "../entity/User";
 
 export const getLogin: RequestHandler = (req, res) => {
   // if(req.userID){
@@ -24,6 +25,10 @@ export const getAddActor: RequestHandler = (req, res) => {
 }
 
 export const getDash: RequestHandler = async (req, res) => {
+
+  
+  const user = await User.findOne({id: req.userID})
+  
 
   
   const films = await Film.createQueryBuilder("film")
@@ -65,6 +70,7 @@ export const getDash: RequestHandler = async (req, res) => {
   }
 
   res.render("dash", {
+    user,
      films,
     userfilmLikes,
     actors,
@@ -85,3 +91,10 @@ export const getActorEditPage:RequestHandler = async (req,res) => {
   res.render("update-actor", {actor})
 
   }
+
+
+// export const getOnBoard:RequestHandler = async (req,res) => {
+
+//   res.render('onboard')
+
+// }

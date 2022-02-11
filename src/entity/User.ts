@@ -15,6 +15,10 @@ export class User extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({default:false})
+    onboard: boolean;
+
+
     @Column({type: "enum", enum: method})
     method: string;
 

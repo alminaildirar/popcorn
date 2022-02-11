@@ -1,14 +1,20 @@
 <%- include('partials/_header')-%>
   <div class="container">
     
-    <% for(let i=0; i<films.length; i++) { %>
     <div class="film-main">
-
+      <% for(let i=0; i<1; i++) { %>
+      <div class="top-rated">
+        <div class="img"><img src="/images/award.png" alt=""></div>
+        <div class="title">Top Rated Film</div>
+        <div class="img"><img src="/images/award.png" alt=""></div>
+      </div>
       <div class="film-content">
         <a class="film-img" href="/film/<%=films[i].id %>"><img src="<%= films[i].image %>" alt=""></a>
         <div class="film-text">
-          <a class="film-title" href="/film/<%=films[i].id %>"><%= films[i].name %></a>
-          <p><%= films[i].description.substring(0, 600) + "..." %></p>
+          <div class="film-info">
+            <a class="film-title" href="/film/<%=films[i].id %>"><%= films[i].name %></a>
+            <p><%= films[i].description.substring(0, 600) + "..." %></p>
+          </div>
           <a href="" class="user">@<%= films[i].user.username %></a>
         </div>
       </div>
@@ -26,12 +32,16 @@
     </div>
     <% } %>
 
+
+
+
     <% for(let i=0; i<actors.length; i++) { %>
         <div class="film-main">
     
           <div class="film-content">
             <a class="film-img" href="/actor/<%=actors[i].id %>"><img src="<%= actors[i].image %>" alt=""></a>
             <div class="film-text">
+              <div class="film-info">
               <a class="film-title" href="/actor/<%=actors[i].id %>"><%= actors[i].name %></a>
               <p><%= actors[i].description.substring(0, 600) + "..." %></p>
               <a href="" class="user">@<%= actors[i].user.username %></a>

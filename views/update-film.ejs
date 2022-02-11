@@ -6,9 +6,9 @@
       <form method="POST" action="/film/update/<%= film.id %>/?_method=PUT" enctype="multipart/form-data">
         <div id="preview" ></div>
         <div class="form-text">
-          <input type="text" name="name"class="item-name" placeholder="<%= film.name %>" >
+          <input type="text" name="name"class="item-name" placeholder="<%= film.name %> "value="<%= film.name %>" >
           <label class="file">
-            <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
+            <input type="file" id="file" name="image"  accept="image/*" aria-label="File browser">
               <span class="file-custom"></span>
           </label>
           <div class="lock-box">

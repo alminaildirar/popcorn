@@ -7,8 +7,10 @@
       <div class="film-content">
         <a class="film-img" href="/actor/<%=actors[i].id %>"><img src="<%= actors[i].image %>" alt=""></a>
         <div class="film-text">
+          <div class="film-info">
           <a class="film-title" href="/actor/<%=actors[i].id %>"><%= actors[i].name %></a>
           <p><%= actors[i].description.substring(0, 600) + "..." %></p>
+          </div>
           <a href="" class="user">@<%= actors[i].user.username %></a>
         </div>
       </div>
