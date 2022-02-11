@@ -136,3 +136,27 @@ export const likeActor: RequestHandler = async (req, res) => {
   res.redirect("/actor/my-actors");
 };
 
+export const relikeActor: RequestHandler = async (req, res) => {
+
+  const userlikes = await ActorLikes.createQueryBuilder("actorlikes")
+    .leftJoinAndSelect("actorlikes.actor", "actor")
+    .where("actorlikes.ownerID = :userID", { userID: req.userID })
+    .andWhere("actorlikes.actor = :actorID", { actorID: Number(req.params.id) })
+    .getOne();
+
+  const idToBeDeleted = userlikes.id;
+
+  const likeToBeDeleted = await ActorLikes.findOne({ id: idToBeDeleted });
+  await ActorLikes.remove(likeToBeDeleted);
+
+  if (req.params.src === "dash") {
+    return res.redirect("/dash");
+  } else if (req.params.src === "single") {
+    return res.redirect(`/actor/${req.params.id}`);
+  }else if(req.params.src === "all"){
+    return res.redirect(`/actor/actors`);
+  }
+
+  res.redirect("/actor/my-actors");
+};
+
