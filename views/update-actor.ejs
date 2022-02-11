@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/images/popcorn.png" type="image/x-icon">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+  <title>Popcorn</title>
+</head>
+<body>
+  <nav class="container">
+    <div class="logo-section">
+      <div class="logo">
+        <a href="/dash"><img src="/images/popcorn.png" alt="" /></a>
+      </div>
+      <div class="header-btns">
+        <a class="toggle" href="javascript:void(0);"><i class="fas fa-bars"></i></a>
+      </div>
+    </div>
+    <div class="menu-section">
+      <div class="menu">
+        <ul>
+          <li><a href="/dash">Home</a></li>
+          <li><a href="/film/my-films">My Films</a></li>
+          <li><a href="/actor/my-actors">My Actors</a></li>
+          <li><a href="/film/add-film">Add Film</a></li>
+          <li><a href="/actor/add-actor">Add Actor</a></li>
+          <li><a href="/film/films">All Films</a></li>
+          <li><a href="/actor/actors">All Actors</a></li>
+          <li><a href="/user/logout">logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="add">
+      <h1>Update Actor</h1>
+    <div id="comment" class="add-block">
+      <form method="POST" action="/actor/update/<%= actor.id %>/?_method=PUT" enctype="multipart/form-data">
+        <div id="preview" ></div>
+        <div class="form-text">
+          <input type="text" name="name"class="item-name" placeholder="<%= actor.name %>" >
+          <label class="file">
+            <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
+              <span class="file-custom"></span>
+          </label>
+          <div class="lock-box">
+            <input type="checkbox" name="visibility" id="lock">
+            <label for="lock"><i></i></label>
+          </div>
+        </div>
+        <textarea name="description" id="" rows="10"><%= actor.description %></textarea>
+        <button class="add-comment">Submit</button>
+      </form>
+    </div>
+    </div>
+    <hr>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

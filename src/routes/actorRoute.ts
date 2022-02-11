@@ -1,7 +1,7 @@
 import * as express from 'express'
 import { verifyToken } from '../middlewares/verifyToken';
 import { addActor, getActor, getAllActors, getMyActors, likeActor, relikeActor, addActorComment, deleteCommentActor} from '../controllers/actorController'
-import { getAddActor } from '../controllers/pageController';
+import { getActorEditPage, getAddActor } from '../controllers/pageController';
 
 
 
@@ -17,6 +17,7 @@ router.get('/like/:id/:src', verifyToken, likeActor)
 router.get('/re-like/:id/:src', verifyToken, relikeActor )
 router.post('/add-comment/:id', verifyToken, addActorComment )
 router.delete('/deleteComment/:id/:actorID',verifyToken, deleteCommentActor)
+router.get('/update-actor/:id',verifyToken, getActorEditPage )
 
 router.get('/:id', verifyToken, getActor)
 
