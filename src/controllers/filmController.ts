@@ -126,10 +126,12 @@ export const likeFilm: RequestHandler = async (req, res) => {
 
   await FilmLikes.save(like);
 
-  if (req.params.src === "all") {
-    return res.redirect("/film/films");
+  if (req.params.src === "dash") {
+    return res.redirect("/dash");
   } else if (req.params.src === "single") {
     return res.redirect(`/film/${req.params.id}`);
+  }else if(req.params.src === "all"){
+    return res.redirect(`/film/films`);
   }
 
   res.redirect("/film/my-films");

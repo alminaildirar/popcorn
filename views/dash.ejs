@@ -52,10 +52,10 @@
       <div class="btns">
 
         <% if(userfilmLikes.includes(films[i].id)) { %>
-        <a href="/film/re-like/<%=films[i].id %>/all" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= films[i].likes.length %></span></a>
+        <a href="/film/re-like/<%=films[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= films[i].likes.length %></span></a>
         <% } %>
         <% if(!userfilmLikes.includes(films[i].id)) { %>
-        <a href="/film/like/<%=films[i].id %>/all" class="fav btn-act"><i class="far fa-heart"></i> <span><%= films[i].likes.length %></span></a>
+        <a href="/film/like/<%=films[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= films[i].likes.length %></span></a>
         <% } %>
         <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= films[i].comments.length %></span></a>
       </div>
@@ -76,11 +76,11 @@
           </div>
           <div class="btns">
     
-            <% if(useractorLikes.includes(films[i].id)) { %>
-            <a href="/actor/re-like/<%=actors[i].id %>/all" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
+            <% if(useractorLikes.includes(actors[i].id)) { %>
+            <a href="/actor/re-like/<%=actors[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
             <% } %>
-            <% if(!useractorLikes.includes(films[i].id)) { %>
-            <a href="/actor/like/<%=actors[i].id %>/all" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
+            <% if(!useractorLikes.includes(actors[i].id)) { %>
+            <a href="/actor/like/<%=actors[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
             <% } %>
             <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= actors[i].comments.length %></span></a>
           </div>

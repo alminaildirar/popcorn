@@ -37,8 +37,7 @@ export const addActor: RequestHandler = async (req, res) => {
       //YÖNLENDİRME DEĞİŞECEK!!!
       res.redirect("/dash");
     } catch (error) {}
-  };
-
+};
 
 export const getActor: RequestHandler = async (req, res) => {
     const currentUser = await User.findOne({id: req.userID})
@@ -114,5 +113,26 @@ export const getMyActors: RequestHandler = async (req, res) => {
   }
 
   res.render("my-actors", { myActors, useractorLikes });
+};
+
+export const likeActor: RequestHandler = async (req, res) => {
+  const currentActor = await Actor.findOne({ id: Number(req.params.id) });
+
+  const like = await ActorLikes.create({
+    ownerID: req.userID,
+    actor: currentActor,
+  });
+
+  await ActorLikes.save(like);
+
+  if (req.params.src === "dash") {
+    return res.redirect("/dash");
+  } else if (req.params.src === "single") {
+    return res.redirect(`/actor/${req.params.id}`);
+  }else if(req.params.src === "all"){
+    return res.redirect(`/actor/actors`);
+  }
+
+  res.redirect("/actor/my-actors");
 };
 
