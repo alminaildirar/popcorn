@@ -136,3 +136,27 @@ export const likeFilm: RequestHandler = async (req, res) => {
 
   res.redirect("/film/my-films");
 };
+
+export const relikeFilm: RequestHandler = async (req, res) => {
+
+  const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
+    .leftJoinAndSelect("filmlikes.film", "film")
+    .where("filmlikes.ownerID = :userID", { userID: req.userID })
+    .andWhere("filmlikes.film = :filmID", { filmID: Number(req.params.id) })
+    .getOne();
+
+  const idToBeDeleted = userlikes.id;
+
+  const likeToBeDeleted = await FilmLikes.findOne({ id: idToBeDeleted });
+  await FilmLikes.remove(likeToBeDeleted);
+
+  if (req.params.src === "dash") {
+    return res.redirect("/dash");
+  } else if (req.params.src === "single") {
+    return res.redirect(`/film/${req.params.id}`);
+  }else if(req.params.src === "all"){
+    return res.redirect(`/film/films`);
+  }
+
+  res.redirect("/film/my-films");
+};
