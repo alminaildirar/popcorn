@@ -178,5 +178,16 @@ export const addActorComment:RequestHandler = async(req,res) => {
 
   res.redirect(`/actor/${req.params.id}`)
 
-}
+};
+
+export const deleteCommentActor:RequestHandler = async (req, res) => {
+  
+  const commentToBeDeleted = await ActorComments.findOne({ id: Number(req.params.id)})
+  await ActorComments.remove(commentToBeDeleted);
+
+  res.redirect(`/actor/${req.params.actorID}`)
+
+};
+
+
 
