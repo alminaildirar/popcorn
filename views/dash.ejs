@@ -32,36 +32,50 @@
     </div>
     <% } %>
 
-
-
-
-    <% for(let i=0; i<actors.length; i++) { %>
-        <div class="film-main">
-    
-          <div class="film-content">
-            <a class="film-img" href="/actor/<%=actors[i].id %>"><img src="<%= actors[i].image %>" alt=""></a>
-            <div class="film-text">
-              <div class="film-info">
-              <a class="film-title" href="/actor/<%=actors[i].id %>"><%= actors[i].name %></a>
-              <p><%= actors[i].description.substring(0, 600) + "..." %></p>
-              <a href="" class="user">@<%= actors[i].user.username %></a>
-            </div>
+    <div class="film-main">
+      <% for(let i=0; i<1; i++) { %>
+      <div class="top-rated">
+        <div class="img"><img src="/images/award.png" alt=""></div>
+        <div class="title">Top Rated Actor</div>
+        <div class="img"><img src="/images/award.png" alt=""></div>
+      </div>
+      <div class="film-content">
+        <a class="film-img" href="/actor/<%=actors[i].id %>"><img src="<%= actors[i].image %>" alt=""></a>
+        <div class="film-text">
+          <div class="film-info">
+            <a class="film-title" href="/actor/<%=actors[i].id %>"><%= actors[i].name %></a>
+            <p><%= actors[i].description.substring(0, 600) + "..." %></p>
           </div>
-          <div class="btns">
-    
-            <% if(useractorLikes.includes(actors[i].id)) { %>
-            <a href="/actor/re-like/<%=actors[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
-            <% } %>
-            <% if(!useractorLikes.includes(actors[i].id)) { %>
-            <a href="/actor/like/<%=actors[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
-            <% } %>
-            <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= actors[i].comments.length %></span></a>
-          </div>
-          
+          <a href="" class="user">@<%= actors[i].user.username %></a>
         </div>
+      </div>
+      <div class="btns">
+
+        <% if(useractorLikes.includes(actors[i].id)) { %>
+        <a href="/actor/re-like/<%=actors[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
         <% } %>
-    
-  </div>
+        <% if(!useractorLikes.includes(actors[i].id)) { %>
+        <a href="/film/like/<%=actors[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
+        <% } %>
+        <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= actors[i].comments.length %></span></a>
+      </div>
+      
+    </div>
+    <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <div>
 
   <script src="/js/script.js"></script>

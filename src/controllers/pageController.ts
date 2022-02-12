@@ -22,24 +22,26 @@ export const getAddFilm: RequestHandler = (req, res) => {
 
 export const getAddActor: RequestHandler = (req, res) => {
   res.render("add-actor");
-}
+};
 
 export const getDash: RequestHandler = async (req, res) => {
 
-  
-  const user = await User.findOne({id: req.userID})
-  
-
-  
-  const films = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .leftJoinAndSelect("film.comments", "comments")
+  const topFilm = await Film.createQueryBuilder("film")
     .leftJoinAndSelect("film.likes", "likes")
-    .take(2)
+    .addSelect("COUNT(likes.filmID)", "count")
+    .groupBy("likes.filmID")
     .where("film.visible = true")
-    .orderBy("film.created", "DESC")
-    .getMany();
+    .orderBy("count", "DESC")
+    .getOne()
 
+  const films = await Film.createQueryBuilder("film")
+  .leftJoinAndSelect("film.user", "user")
+  .leftJoinAndSelect("film.comments", "comments")
+  .leftJoinAndSelect("film.likes", "likes")
+  .where("film.visible = true")
+  .andWhere("film.id = :filmID", {filmID: topFilm.id})
+  .getMany();
+     
   const userFilmLikes = await FilmLikes.createQueryBuilder("filmlikes")
     .leftJoinAndSelect("filmlikes.film", "film")
     .where("filmlikes.ownerID = :filmuserID", { filmuserID: req.userID })
@@ -50,48 +52,52 @@ export const getDash: RequestHandler = async (req, res) => {
     userfilmLikes.push(userFilmLikes[i].film.id);
   }
 
+  const topActor = await Actor.createQueryBuilder("actor")
+  .leftJoinAndSelect("actor.likes", "likes")
+  .addSelect("COUNT(likes.actorID)", "count")
+  .groupBy("likes.actorID")
+  .where("actor.visible = true")
+  .orderBy("count", "DESC")
+  .getOne()
+
+  
   const actors = await Actor.createQueryBuilder("actor")
   .leftJoinAndSelect("actor.user", "user")
   .leftJoinAndSelect("actor.comments", "comments")
   .leftJoinAndSelect("actor.likes","likes")
-  .take(2)
   .where("actor.visible = true")
+  .andWhere("actor.id = :actorID", {actorID: topActor.id})
   .orderBy("actor.created", "DESC")
   .getMany()
 
- const userActorLikes = await ActorLikes.createQueryBuilder("actorlikes")
-   .leftJoinAndSelect("actorlikes.actor", "actor")
-   .where("actorlikes.ownerID = :actoruserID", { actoruserID: req.userID })
-   .getMany();
+
+  const userActorLikes = await ActorLikes.createQueryBuilder("actorlikes")
+    .leftJoinAndSelect("actorlikes.actor", "actor")
+    .where("actorlikes.ownerID = :actoruserID", { actoruserID: req.userID })
+    .getMany();
 
   const useractorLikes = [];
-   for (let i = 0; i < userActorLikes.length; i++) {
+  for (let i = 0; i < userActorLikes.length; i++) {
     useractorLikes.push(userActorLikes[i].actor.id);
   }
 
   res.render("dash", {
-    user,
-     films,
+    films,
     userfilmLikes,
     actors,
-    useractorLikes
+    useractorLikes,
   });
 };
 
-export const getFilmEditPage:RequestHandler = async (req,res) => {
-  
-  const film = await Film.findOne({id: Number(req.params.id)})
-  res.render("update-film", {film})
+export const getFilmEditPage: RequestHandler = async (req, res) => {
+  const film = await Film.findOne({ id: Number(req.params.id) });
+  res.render("update-film", { film });
+};
 
-}
-
-export const getActorEditPage:RequestHandler = async (req,res) => {
-  
-  const actor = await Actor.findOne({id: Number(req.params.id)})
-  res.render("update-actor", {actor})
-
-  }
-
+export const getActorEditPage: RequestHandler = async (req, res) => {
+  const actor = await Actor.findOne({ id: Number(req.params.id) });
+  res.render("update-actor", { actor });
+};
 
 // export const getOnBoard:RequestHandler = async (req,res) => {
 

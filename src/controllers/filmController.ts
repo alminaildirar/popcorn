@@ -39,7 +39,10 @@ export const addFilm: RequestHandler = async (req, res) => {
       user: currentUser,
     });
     await Film.save(film);
-    //YÖNLENDİRME DEĞİŞECEK!!!
+
+
+    
+    
     res.redirect("/dash");
   } catch (error) {}
 };
