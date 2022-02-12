@@ -22,7 +22,8 @@ export const addFilm: RequestHandler = async (req, res) => {
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
     }
-
+    
+    //If the user does not upload image, added default image.
     let imageurl;
     if(!req.files){
       imageurl = '/uploads/default.jpg'
@@ -236,11 +237,16 @@ export const updateFilm: RequestHandler = async (req, res) => {
       fs.mkdirSync(uploadDir);
     }
 
-    const imageName = req.files.image['name'];
-    const image = req.files.image['data'];
-
-    fs.writeFileSync(uploadDir + '/' + imageName, image);
-    const imageurl = '/uploads/' + imageName;
+    const filmForImage = await Film.findOne({ id: Number(req.params.id) });
+    let imageurl;
+    if(!req.files){
+      imageurl = filmForImage.image;
+    }else{
+      const imageName = req.files.image['name'];
+      const image = req.files.image['data'];
+      fs.writeFileSync(uploadDir + '/' + imageName, image);
+      imageurl = '/uploads/' + imageName;
+    }
 
     const filmToBeCheck = await Film.createQueryBuilder('film')
       .leftJoinAndSelect('film.user', 'user')
