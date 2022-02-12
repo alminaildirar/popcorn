@@ -1,20 +1,25 @@
 <%- include('partials/_header')-%>
   <div class="container film">
+    
     <h1><%= film.name %></h1>
     <div class="film-main">
       <div class="film-pos">
         <img src="<%= film.image %>" alt="">
       </div>
-      <div class="btns">
+      <div class="film-detail">
+        <div class="btns">
         
-        <% if(liked == true) {  %>
-        <a href="/film/re-like/<%=film.id %>/single" class="fav like btn-act"><i class="fas fa-heart"></i><span><%= film.likes.length %></span></a>
-        <% } %>
-        <% if(liked == false) {  %>
-        <a href="/film/like/<%=film.id %>/single" class="fav btn-act"><i class="far fa-heart"></i><span><%= film.likes.length %></span></a>
-        <% } %>
-        <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i><span><%= film.comments.length %></span></a>
+          <% if(liked == true) {  %>
+          <a href="/film/re-like/<%=film.id %>/single" class="fav like btn-act"><i class="fas fa-heart"></i><span><%= film.likes.length %></span></a>
+          <% } %>
+          <% if(liked == false) {  %>
+          <a href="/film/like/<%=film.id %>/single" class="fav btn-act"><i class="far fa-heart"></i><span><%= film.likes.length %></span></a>
+          <% } %>
+          <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i><span><%= film.comments.length %></span></a>
+          
+        </div>
         
+        <div class="ago"><%= (moment(film.created).startOf('minute').fromNow()) %> <i class="far fa-clock"></i></div>
       </div>
       <p>
         <%= film.description %>

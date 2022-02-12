@@ -165,6 +165,12 @@ nav.responsive .menu-section{
   padding-right:10px;
   text-align: right;
 }
+.film-detail {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .btns{
   display: flex;
 }

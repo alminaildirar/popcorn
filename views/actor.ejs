@@ -6,6 +6,7 @@
       <div class="film-pos">
         <img src="<%= actor.image %>" alt="">
       </div>
+      <div class="film-detail">
       <div class="btns">
         
         <% if(liked == true) {  %>
@@ -17,6 +18,8 @@
         <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i><span><%= actor.comments.length %></span></a>
         
       </div>
+      <div class="ago"><%= (moment(actor.created).startOf('minute').fromNow()) %> <i class="far fa-clock"></i></div>
+    </div>
       <p>
         <%= actor.description %>
       </p>

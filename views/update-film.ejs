@@ -4,7 +4,9 @@
       <h1>Update Film</h1>
     <div id="comment" class="add-block">
       <form method="POST" action="/film/update/<%= film.id %>/?_method=PUT" enctype="multipart/form-data">
-        <div id="preview" ></div>
+        <div id="preview">
+          <img src="<%= film.image %>" alt="">
+        </div>
         <div class="form-text">
           <input type="text" name="name"class="item-name" placeholder="<%= film.name %> "value="<%= film.name %>" >
           <label class="file">

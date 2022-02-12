@@ -4,7 +4,9 @@
       <h1>Update Actor</h1>
     <div id="comment" class="add-block">
       <form method="POST" action="/actor/update/<%= actor.id %>/?_method=PUT" enctype="multipart/form-data">
-        <div id="preview" ></div>
+        <div id="preview" >
+          <img src="<%= actor.image %>" alt="">
+        </div>
         <div class="form-text">
           <input type="text" name="name"class="item-name" placeholder="<%= actor.name %>" value="<%= actor.name %>">
           <label class="file">
