@@ -23,11 +23,15 @@ export const addActor: RequestHandler = async (req, res) => {
       fs.mkdirSync(uploadDir);
     }
 
-    const imageName = req.files.image['name'];
-    const image = req.files.image['data'];
-
-    fs.writeFileSync(uploadDir + '/' + imageName, image);
-    const imageurl = '/uploads/' + imageName;
+    let imageurl;
+    if(!req.files){
+      imageurl = '/uploads/default.jpg'
+    }else{
+      const imageName = req.files.image['name'];
+      const image = req.files.image['data'];
+      fs.writeFileSync(uploadDir + '/' + imageName, image);
+      imageurl = '/uploads/' + imageName;
+    }
 
     const { name, description } = req.body;
     let visibility;

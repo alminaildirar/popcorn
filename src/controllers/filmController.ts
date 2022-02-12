@@ -48,7 +48,7 @@ export const addFilm: RequestHandler = async (req, res) => {
 
     res.status(201).redirect('/film/my-films');
   } catch (error) {
-    console.log(error)
+    throw new Error();
   }
 };
 
