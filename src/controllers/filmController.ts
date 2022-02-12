@@ -23,10 +23,16 @@ export const addFilm: RequestHandler = async (req, res) => {
       fs.mkdirSync(uploadDir);
     }
 
-    const imageName = req.files.image['name'];
-    const image = req.files.image['data'];
-    fs.writeFileSync(uploadDir + '/' + imageName, image);
-    const imageurl = '/uploads/' + imageName;
+    let imageurl;
+    if(!req.files){
+      imageurl = '/uploads/default.jpg'
+    }else{
+      const imageName = req.files.image['name'];
+      const image = req.files.image['data'];
+      fs.writeFileSync(uploadDir + '/' + imageName, image);
+      imageurl = '/uploads/' + imageName;
+    }
+
 
     const { name, description } = req.body;
     let visibility: boolean;
@@ -42,7 +48,7 @@ export const addFilm: RequestHandler = async (req, res) => {
 
     res.status(201).redirect('/film/my-films');
   } catch (error) {
-    throw new Error();
+    console.log(error)
   }
 };
 
@@ -133,7 +139,7 @@ export const getMyFilms: RequestHandler = async (req, res) => {
     for (let i = 0; i < userlikes.length; i++) {
       userfilmLikes.push(userlikes[i].film.id);
     }
-
+    
     res.status(200).render('my-films', { myFilms, userfilmLikes });
   } catch (Error) {
     throw new Error();
