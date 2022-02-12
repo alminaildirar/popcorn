@@ -1,32 +1,32 @@
-import { RequestHandler } from "express";
-import { Film } from "../entity/Film";
-import { FilmLikes } from "../entity/FilmLikes";
-import { User } from "../entity/User";
-import * as fs from "fs";
-import { FilmComments } from "../entity/FilmComments";
-import { RepositoryNotFoundError } from "typeorm";
+import { RequestHandler } from 'express';
+import { Film } from '../entity/Film';
+import { FilmLikes } from '../entity/FilmLikes';
+import { User } from '../entity/User';
+import * as fs from 'fs';
+import { FilmComments } from '../entity/FilmComments';
 
 export const addFilm: RequestHandler = async (req, res) => {
   try {
-    
-    if (!req.userID) return res.redirect("/login");
+    //Check first is there a user logged in?If not, go back login
+    if (!req.userID) return res.redirect('/login');
 
+    //Check are all required fields are filled?
     if (!req.body.name || !req.body.description) {
-      const errors: string = "Film name/Film description is required.";
-      return res.render("add-film", { errors });
+      const errors: string = 'Film name/Film description is required.';
+      return res.render('add-film', { errors });
     }
-    
-    const currentUser = await User.findOne({ id: req.userID });
 
-    const uploadDir = "public/uploads";
+    const currentUser = await User.findOne({ id: req.userID });
+    //Check upload folder is exist?if not create for the image to be uploaded by the user
+    const uploadDir = 'public/uploads';
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir);
     }
 
-    const imageName = req.files.image["name"];
-    const image = req.files.image["data"];
-    fs.writeFileSync(uploadDir + "/" + imageName, image);
-    const imageurl = "/uploads/" + imageName;
+    const imageName = req.files.image['name'];
+    const image = req.files.image['data'];
+    fs.writeFileSync(uploadDir + '/' + imageName, image);
+    const imageurl = '/uploads/' + imageName;
 
     const { name, description } = req.body;
     let visibility: boolean;
@@ -40,204 +40,242 @@ export const addFilm: RequestHandler = async (req, res) => {
     });
     await Film.save(film);
 
-
-    
-    
-    res.redirect("/dash");
-  } catch (error) {}
+    res.status(201).redirect('/dash');
+  } catch (error) {
+    throw new Error();
+  }
 };
 
+//This is used to get single film and actor pages
 export const getFilm: RequestHandler = async (req, res) => {
-  const currentUser = await User.findOne({ id: req.userID });
-  const film = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .leftJoinAndSelect("film.comments", "comments.content")
-    .leftJoinAndSelect("film.likes", "likes")
-    .where("film.id = :filmID", { filmID: req.params.id })
-    .getOne();
+  try {
+    const currentUser = await User.findOne({ id: req.userID });
+    const film = await Film.createQueryBuilder('film')
+      .leftJoinAndSelect('film.user', 'user')
+      .leftJoinAndSelect('film.comments', 'comments.content')
+      .leftJoinAndSelect('film.likes', 'likes')
+      .where('film.id = :filmID', { filmID: req.params.id })
+      .getOne();
 
-  if (!film) {
-    return res.redirect("/dash");
+    if (!film) {
+      return res.redirect('/dash');
+    }
+    //This is used to user can like/re-like on single pages.
+    let liked = false;
+    for (let i = 0; i < film.likes.length; i++) {
+      film.likes[i].ownerID == req.userID ? (liked = true) : (liked = false);
+    }
+
+    res.status(200).render('film', { film, liked, user: currentUser.username });
+  } catch (Error) {
+    throw new Error();
   }
-
-  let liked = false;
-  for (let i = 0; i < film.likes.length; i++) {
-    film.likes[i].ownerID == req.userID ? (liked = true) : (liked = false);
-  }
-
-  res.render("film", { film, liked, user: currentUser.username });
 };
 
+//To list all visible films
 export const getAllFilms: RequestHandler = async (req, res) => {
-  const page = req.query.page || 1;
-  const totalFilms = (await Film.find({ visible: true })).length;
+  try {
+    //For pagination, get 5 films per page.
+    const page = req.query.page || 1;
+    const totalFilms = (await Film.find({ visible: true })).length;
 
-  const films = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .leftJoinAndSelect("film.comments", "comments")
-    .leftJoinAndSelect("film.likes", "likes")
-    .take(5)
-    .skip((Number(page) - 1) * 5)
-    .where("film.visible = true")
-    .orderBy("film.created", "DESC")
-    .getMany();
+    const films = await Film.createQueryBuilder('film')
+      .leftJoinAndSelect('film.user', 'user')
+      .leftJoinAndSelect('film.comments', 'comments')
+      .leftJoinAndSelect('film.likes', 'likes')
+      .take(5)
+      .skip((Number(page) - 1) * 5)
+      .where('film.visible = true')
+      .orderBy('film.created', 'DESC')
+      .getMany();
 
-  const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
-    .leftJoinAndSelect("filmlikes.film", "film")
-    .where("filmlikes.ownerID = :userID", { userID: req.userID })
-    .getMany();
+    //i used that query in order to get current user's like
+    const userlikes = await FilmLikes.createQueryBuilder('filmlikes')
+      .leftJoinAndSelect('filmlikes.film', 'film')
+      .where('filmlikes.ownerID = :userID', { userID: req.userID })
+      .getMany();
 
-  const userfilmLikes = [];
-  for (let i = 0; i < userlikes.length; i++) {
-    userfilmLikes.push(userlikes[i].film.id);
+    //To prevent like over and over again, i used that array for like/re-like buttons visibility
+    const userfilmLikes = [];
+    for (let i = 0; i < userlikes.length; i++) {
+      userfilmLikes.push(userlikes[i].film.id);
+    }
+    res.status(200).render('films', {
+      films,
+      userfilmLikes,
+      pages: Math.ceil(totalFilms / 5),
+      current: page,
+    });
+  } catch (Error) {
+    throw new Error();
   }
-  res.render("films", {
-    films,
-    userfilmLikes,
-    pages: Math.ceil(totalFilms / 5),
-    current: page,
-  });
 };
 
+//To list all my own films
 export const getMyFilms: RequestHandler = async (req, res) => {
-  //const currentUser = await User.findOne({id: req.userID})
-  const myFilms = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .leftJoinAndSelect("film.comments", "comments")
-    .leftJoinAndSelect("film.likes", "likes")
-    .where("film.user.id = :userID", { userID: req.userID })
-    .orderBy("film.created", "DESC")
-    .getMany();
+  try {
+    const myFilms = await Film.createQueryBuilder('film')
+      .leftJoinAndSelect('film.user', 'user')
+      .leftJoinAndSelect('film.comments', 'comments')
+      .leftJoinAndSelect('film.likes', 'likes')
+      .where('film.user.id = :userID', { userID: req.userID })
+      .orderBy('film.created', 'DESC')
+      .getMany();
 
-  const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
-    .leftJoinAndSelect("filmlikes.film", "film")
-    .where("filmlikes.ownerID = :userID", { userID: req.userID })
-    .getMany();
+    //i used that query in order to get current user's like
+    const userlikes = await FilmLikes.createQueryBuilder('filmlikes')
+      .leftJoinAndSelect('filmlikes.film', 'film')
+      .where('filmlikes.ownerID = :userID', { userID: req.userID })
+      .getMany();
 
-  const userfilmLikes = [];
-  for (let i = 0; i < userlikes.length; i++) {
-    userfilmLikes.push(userlikes[i].film.id);
+    //To prevent like over and over again, i used that array for like/re-like buttons visibility
+    const userfilmLikes = [];
+    for (let i = 0; i < userlikes.length; i++) {
+      userfilmLikes.push(userlikes[i].film.id);
+    }
+
+    res.status(200).render('my-films', { myFilms, userfilmLikes });
+  } catch (Error) {
+    throw new Error();
   }
-
-  res.render("my-films", { myFilms, userfilmLikes });
 };
 
 export const likeFilm: RequestHandler = async (req, res) => {
-  const currentFilm = await Film.findOne({ id: Number(req.params.id) });
+  try {
+    const currentFilm = await Film.findOne({ id: Number(req.params.id) });
+    const like = await FilmLikes.create({
+      ownerID: req.userID,
+      film: currentFilm,
+    });
+    await FilmLikes.save(like);
 
-  const like = await FilmLikes.create({
-    ownerID: req.userID,
-    film: currentFilm,
-  });
+    //used to redirect the user to the page from whichever page user came from
+    if (req.params.src === 'dash') {
+      return res.redirect('/dash');
+    } else if (req.params.src === 'single') {
+      return res.redirect(`/film/${req.params.id}`);
+    } else if (req.params.src === 'all') {
+      return res.redirect(`/film/films`);
+    }
 
-  await FilmLikes.save(like);
-
-  if (req.params.src === "dash") {
-    return res.redirect("/dash");
-  } else if (req.params.src === "single") {
-    return res.redirect(`/film/${req.params.id}`);
-  } else if (req.params.src === "all") {
-    return res.redirect(`/film/films`);
+    res.status(201).redirect('/film/my-films');
+  } catch (Error) {
+    throw new Error();
   }
-
-  res.redirect("/film/my-films");
 };
 
 export const relikeFilm: RequestHandler = async (req, res) => {
-  const userlikes = await FilmLikes.createQueryBuilder("filmlikes")
-    .leftJoinAndSelect("filmlikes.film", "film")
-    .where("filmlikes.ownerID = :userID", { userID: req.userID })
-    .andWhere("filmlikes.film = :filmID", { filmID: Number(req.params.id) })
-    .getOne();
+  try {
+    const userlikes = await FilmLikes.createQueryBuilder('filmlikes')
+      .leftJoinAndSelect('filmlikes.film', 'film')
+      .where('filmlikes.ownerID = :userID', { userID: req.userID })
+      .andWhere('filmlikes.film = :filmID', { filmID: Number(req.params.id) })
+      .getOne();
 
-  const idToBeDeleted = userlikes.id;
+    const idToBeDeleted = userlikes.id;
 
-  const likeToBeDeleted = await FilmLikes.findOne({ id: idToBeDeleted });
-  await FilmLikes.remove(likeToBeDeleted);
+    const likeToBeDeleted = await FilmLikes.findOne({ id: idToBeDeleted });
+    await FilmLikes.remove(likeToBeDeleted);
 
-  if (req.params.src === "dash") {
-    return res.redirect("/dash");
-  } else if (req.params.src === "single") {
-    return res.redirect(`/film/${req.params.id}`);
-  } else if (req.params.src === "all") {
-    return res.redirect(`/film/films`);
+    //used to redirect the user to the page from whichever page user came from
+    if (req.params.src === 'dash') {
+      return res.redirect('/dash');
+    } else if (req.params.src === 'single') {
+      return res.redirect(`/film/${req.params.id}`);
+    } else if (req.params.src === 'all') {
+      return res.redirect(`/film/films`);
+    }
+    res.status(200).redirect('/film/my-films');
+  } catch (Error) {
+    throw new Error();
   }
-
-  res.redirect("/film/my-films");
 };
 
 export const addFilmComment: RequestHandler = async (req, res) => {
-  const currentUser = await User.findOne({ id: req.userID });
+  try {
+    const currentUser = await User.findOne({ id: req.userID });
+    const currentFilm = await Film.findOne({ id: Number(req.params.id) });
+    const { content } = req.body;
 
-  const currentFilm = await Film.findOne({ id: Number(req.params.id) });
-  const { content } = req.body;
+    const comment = FilmComments.create({
+      content,
+      author: currentUser.username,
+      film: currentFilm,
+    });
 
-  const comment = FilmComments.create({
-    content,
-    author: currentUser.username,
-    film: currentFilm,
-  });
-
-  await FilmComments.save(comment);
-
-  res.redirect(`/film/${req.params.id}`);
+    await FilmComments.save(comment);
+    res.status(201).redirect(`/film/${req.params.id}`);
+  } catch (Error) {
+    throw new Error();
+  }
 };
 
 export const deleteCommentFilm: RequestHandler = async (req, res) => {
-  const commentToBeDeleted = await FilmComments.findOne({
-    id: Number(req.params.id),
-  });
-  await FilmComments.remove(commentToBeDeleted);
+  try {
+    const commentToBeDeleted = await FilmComments.findOne({
+      id: Number(req.params.id),
+    });
+    await FilmComments.remove(commentToBeDeleted);
 
-  res.redirect(`/film/${req.params.filmID}`);
+    res.status(200).redirect(`/film/${req.params.filmID}`);
+  } catch (Error) {
+    throw new Error();
+  }
 };
 
 export const updateFilm: RequestHandler = async (req, res) => {
-  const uploadDir = "public/uploads";
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
+  try {
+    const uploadDir = 'public/uploads';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
+    const imageName = req.files.image['name'];
+    const image = req.files.image['data'];
+
+    fs.writeFileSync(uploadDir + '/' + imageName, image);
+    const imageurl = '/uploads/' + imageName;
+
+    const filmToBeCheck = await Film.createQueryBuilder('film')
+      .leftJoinAndSelect('film.user', 'user')
+      .where('film.id = :filmID', { filmID: req.params.id })
+      .getOne();
+
+    //check first film's creator is current user?
+    if (filmToBeCheck.user.id === req.userID) {
+      const { name, description } = req.body;
+      let visibility;
+      req.body.visibility ? (visibility = false) : (visibility = true);
+
+      const film = await Film.findOne({ id: Number(req.params.id) });
+      film.name = name;
+      film.description = description;
+      film.visible = visibility;
+      film.image = imageurl;
+      await Film.save(film);
+
+      return res.redirect('/film/my-films');
+    }
+    return res.redirect('/dash');
+  } catch (Error) {
+    throw new Error();
   }
-
-  const imageName = req.files.image["name"];
-  const image = req.files.image["data"];
-
-  fs.writeFileSync(uploadDir + "/" + imageName, image);
-  const imageurl = "/uploads/" + imageName;
-
-  const filmToBeCheck = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .where("film.id = :filmID", { filmID: req.params.id })
-    .getOne();
-
-  if (filmToBeCheck.user.id === req.userID) {
-    const { name, description } = req.body;
-    let visibility;
-    req.body.visibility ? (visibility = false) : (visibility = true);
-
-    const film = await Film.findOne({ id: Number(req.params.id) });
-    film.name = name;
-    film.description = description;
-    film.visible = visibility;
-    film.image = imageurl;
-    await Film.save(film);
-
-    return res.redirect("/film/my-films");
-  }
-
-  return res.redirect("/dash");
 };
 
 export const deleteFilm: RequestHandler = async (req, res) => {
-  const filmToBeCheck = await Film.createQueryBuilder("film")
-    .leftJoinAndSelect("film.user", "user")
-    .where("film.id = :filmID", { filmID: req.params.id })
-    .getOne();
+  try {
+    const filmToBeCheck = await Film.createQueryBuilder('film')
+      .leftJoinAndSelect('film.user', 'user')
+      .where('film.id = :filmID', { filmID: req.params.id })
+      .getOne();
 
-  if (filmToBeCheck.user.id === req.userID) {
-    const film = await Film.findOne({ id: Number(req.params.id) });
-    await Film.remove(film);
-    return res.redirect("/film/my-films");
+    if (filmToBeCheck.user.id === req.userID) {
+      const film = await Film.findOne({ id: Number(req.params.id) });
+      await Film.remove(film);
+      return res.redirect('/film/my-films');
+    }
+    return res.redirect('/dash');
+  } catch (Error) {
+    throw new Error();
   }
-
-  return res.redirect("/dash");
 };
