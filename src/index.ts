@@ -44,6 +44,9 @@ passportStrategyGoogle(passport);
 passportStrategyFacebook(passport);
 passportStrategyLocal(passport);
 
+app.use((Error, res) => {
+  res.status(400).json({Error});
+});
 
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Server is running.`);

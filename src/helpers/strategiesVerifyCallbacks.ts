@@ -19,13 +19,12 @@ export const googleVerify = async(request, accessToken, refreshToken, profile, d
         return done(null,newUser)
 
     }catch(error){
-
+        throw new Error();
     }
 
-}
+};
 
-
-export const facebookVerify = async(request:any, accessToken:any, refreshToken:any, profile:any, done:any) => {
+export const facebookVerify = async(request, accessToken, refreshToken, profile, done) => {
     try{
         const existingUser = await User.findOne({email: profile._json.email});
         if(existingUser){
@@ -40,28 +39,20 @@ export const facebookVerify = async(request:any, accessToken:any, refreshToken:a
         await newUser.save();
         return done(null,newUser)
 
-
-        
     }catch(error){
-        
+        throw new Error();
     }
-
-}
-
-
+};
 
 export const localVerify = async (username,password,done) => {
-        
-    
     try{
         const user = await User.findOne({username})
         if(!user){
 
             return done(null,false,{message: 'User not found.'})
         }
-  
         await compare(password, user.password, (err,res)=> {
-            
+
             if(res){ 
                 return done(null,user) 
  
@@ -73,7 +64,6 @@ export const localVerify = async (username,password,done) => {
     }catch(err){
         return done(err,null)
     }
-
-}
+};
 
 
