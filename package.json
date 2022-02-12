@@ -8,6 +8,7 @@
       "@types/node": "^8.0.29",
       "@types/passport-facebook": "^2.1.11",
       "nodemon": "^2.0.15",
+      "prettier": "^2.5.1",
       "ts-node": "3.3.0",
       "typescript": "3.3.3333"
    },
