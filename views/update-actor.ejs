@@ -6,7 +6,7 @@
       <form method="POST" action="/actor/update/<%= actor.id %>/?_method=PUT" enctype="multipart/form-data">
         <div id="preview" ></div>
         <div class="form-text">
-          <input type="text" name="name"class="item-name" placeholder="<%= actor.name %>" >
+          <input type="text" name="name"class="item-name" placeholder="<%= actor.name %>" value="<%= actor.name %>">
           <label class="file">
             <input type="file" id="file" name="image" accept="image/*" aria-label="File browser">
               <span class="file-custom"></span>

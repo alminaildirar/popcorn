@@ -231,11 +231,16 @@ export const updateActor: RequestHandler = async (req, res) => {
       fs.mkdirSync(uploadDir);
     }
 
-    const imageName = req.files.image['name'];
-    const image = req.files.image['data'];
-
-    fs.writeFileSync(uploadDir + '/' + imageName, image);
-    const imageurl = '/uploads/' + imageName;
+    const actorForImage = await Actor.findOne({ id: Number(req.params.id) });
+    let imageurl;
+    if(!req.files){
+      imageurl = actorForImage.image;
+    }else{
+      const imageName = req.files.image['name'];
+      const image = req.files.image['data'];
+      fs.writeFileSync(uploadDir + '/' + imageName, image);
+      imageurl = '/uploads/' + imageName;
+    }
 
     const actorToBeCheck = await Actor.createQueryBuilder('actor')
       .leftJoinAndSelect('actor.user', 'user')
