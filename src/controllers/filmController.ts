@@ -40,13 +40,13 @@ export const addFilm: RequestHandler = async (req, res) => {
     });
     await Film.save(film);
 
-    res.status(201).redirect('/dash');
+    res.status(201).redirect('/film/my-films');
   } catch (error) {
     throw new Error();
   }
 };
 
-//This is used to get single film and actor pages
+//This is used to get single film page
 export const getFilm: RequestHandler = async (req, res) => {
   try {
     const currentUser = await User.findOne({ id: req.userID });
