@@ -12,7 +12,12 @@
               <span class="file-custom"></span>
           </label>
           <div class="lock-box">
-            <input type="checkbox" name="visibility" id="lock">
+            <% if(!film.visible) { %>
+              <input type="checkbox" name="visibility" id="lock" checked>
+              <% } %>
+              <% if(film.visible) { %>
+                <input type="checkbox" name="visibility" id="lock">
+              <% } %>
             <label for="lock"><i></i></label>
           </div>
         </div>

@@ -8,7 +8,10 @@
         <a class="film-img" href="/actor/<%=myActors[i].id %>"><img src="<%= myActors[i].image %>" alt=""></a>
         <div class="film-text">
           <div class="film-info">
+            <div class="film-header">
           <a class="film-title" href="/actor/<%=myActors[i].id %>"><%= myActors[i].name %></a>
+          <div class="ago"><%= (moment(myActors[i].created).startOf('minute').fromNow()) %> <i class="far fa-clock"></i></div>
+            </div>
           <p><%= myActors[i].description.substring(0, 600) + "..." %></p>
           </div>
           <a href="" class="user">@<%= myActors[i].user.username %></a>
@@ -23,7 +26,7 @@
           <% if(!useractorLikes.includes(myActors[i].id)) { %>
           <a href="/actor/like/<%=myActors[i].id %>/my" class="fav btn-act"><i class="far fa-heart"></i> <span><%= myActors[i].likes.length %></span></a>
           <% } %>
-          <a href="#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= myActors[i].comments.length %></span></a>
+          <a href="/actor/<%=myActors[i].id %>#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= myActors[i].comments.length %></span></a>
           <% if(myActors[i].visible== false) { %>
             <a href="" class="btn-act"><i class="fas fa-lock"></i></a>
           <% } %>

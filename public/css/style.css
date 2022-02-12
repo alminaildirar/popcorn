@@ -120,6 +120,17 @@ nav.responsive .menu-section{
   font-size:18px;
   line-height:1.5;
 }
+.film-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ago {
+  padding:0 10px;
+  color: #555;
+  font-size: 18px;
+  font-style: italic;
+}
 .film-content {
   display: flex;
   justify-content: space-between;

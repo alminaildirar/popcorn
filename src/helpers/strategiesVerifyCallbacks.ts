@@ -49,7 +49,7 @@ export const localVerify = async (username,password,done) => {
         const user = await User.findOne({username})
         if(!user){
 
-            return done(null,false,{message: 'User not found.'})
+            return done(null,false,{errors: 'User not found.'})
         }
         await compare(password, user.password, (err,res)=> {
 

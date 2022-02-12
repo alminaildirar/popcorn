@@ -11,6 +11,14 @@
 </head>
 <body>
   <main>
+    <% if(locals.errors){ %>
+      <% for(let i=0; i < locals.errors.length; i++){ %>
+      <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <%= locals.errors[i] %>
+      </div>
+      <% } %> 
+    <% } %>
     <div class="logo">
       <img src="/images/popcorn.png" alt="">
     </div>

@@ -14,6 +14,7 @@ import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
 import filmRoute from './routes/filmRoute'
 import actorRoute from "./routes/actorRoute";
+import * as moment from "moment";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ createConnection().then(async connection => {
 //------Init Express App---------
 const app = express();
 app.set("view engine", "ejs");
+app.locals.moment = require('moment');
 
 app.use(express.static("public"));
 // for parsing application/json
@@ -32,6 +34,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(fileUpload())
 app.use(methodOverride('_method', {methods:['POST','GET']}))
+
 
 
 app.use('/', pageRoute)

@@ -5,6 +5,7 @@ import { User } from '../entity/User';
 import * as fs from 'fs';
 import { FilmComments } from '../entity/FilmComments';
 
+
 export const addFilm: RequestHandler = async (req, res) => {
   try {
     //Check first is there a user logged in?If not, go back login
@@ -60,9 +61,12 @@ export const getFilm: RequestHandler = async (req, res) => {
     const film = await Film.createQueryBuilder('film')
       .leftJoinAndSelect('film.user', 'user')
       .leftJoinAndSelect('film.comments', 'comments.content')
+      
       .leftJoinAndSelect('film.likes', 'likes')
       .where('film.id = :filmID', { filmID: req.params.id })
       .getOne();
+
+  
 
     if (!film) {
       return res.redirect('/dash');
@@ -73,7 +77,7 @@ export const getFilm: RequestHandler = async (req, res) => {
       film.likes[i].ownerID == req.userID ? (liked = true) : (liked = false);
     }
 
-    res.status(200).render('film', { film, liked, user: currentUser.username });
+    res.status(200).render('film', { film, liked, user: currentUser.username});
   } catch (Error) {
     throw new Error();
   }
@@ -111,7 +115,7 @@ export const getAllFilms: RequestHandler = async (req, res) => {
       films,
       userfilmLikes,
       pages: Math.ceil(totalFilms / 5),
-      current: page,
+      current: page
     });
   } catch (Error) {
     throw new Error();

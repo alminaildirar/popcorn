@@ -130,6 +130,7 @@ export const getFilmEditPage: RequestHandler = async (req, res) => {
 export const getActorEditPage: RequestHandler = async (req, res) => {
   try {
     const actor = await Actor.findOne({ id: Number(req.params.id) });
+    
     res.status(200).render('update-actor', { actor });
   } catch (Error) {
     throw new Error();
