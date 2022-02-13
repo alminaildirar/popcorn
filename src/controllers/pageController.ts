@@ -52,6 +52,8 @@ export const getDash: RequestHandler = async (req, res) => {
       .where('film.visible = true')
       .orderBy('count', 'DESC')
       .getOne();
+    
+    if(!topFilm) return res.redirect('/film/my-films');
 
     //I used this because i need to get film likes, comments too.
     const films = await Film.createQueryBuilder('film')
@@ -82,6 +84,8 @@ export const getDash: RequestHandler = async (req, res) => {
       .where('actor.visible = true')
       .orderBy('count', 'DESC')
       .getOne();
+    
+    if(!topActor) return res.redirect('/actor/my-actors')
       
     //To get top rated actors details, i used this query.
     const actors = await Actor.createQueryBuilder('actor')
