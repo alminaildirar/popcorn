@@ -61,7 +61,7 @@
         <a href="/actor/re-like/<%=actors[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
         <% } %>
         <% if(!useractorLikes.includes(actors[i].id)) { %>
-        <a href="/film/like/<%=actors[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
+        <a href="/actor/like/<%=actors[i].id %>/dash" class="fav btn-act"><i class="far fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
         <% } %>
         <a href="/actor/<%= actors[i].id%>#comment" class="comment-btn btn-act"><i class="far fa-comment"></i> <span><%= actors[i].comments.length %></span></a>
       </div>
