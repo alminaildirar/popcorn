@@ -82,7 +82,7 @@ export const getDash: RequestHandler = async (req, res) => {
       .where('actor.visible = true')
       .orderBy('count', 'DESC')
       .getOne();
-
+      
     //To get top rated actors details, i used this query.
     const actors = await Actor.createQueryBuilder('actor')
       .leftJoinAndSelect('actor.user', 'user')
@@ -112,7 +112,7 @@ export const getDash: RequestHandler = async (req, res) => {
       useractorLikes,
     });
   } catch (Error) {
-    throw new Error();
+    console.log(Error)
   }
 };
 

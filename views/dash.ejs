@@ -22,7 +22,6 @@
         </div>
       </div>
       <div class="btns">
-
         <% if(userfilmLikes.includes(films[i].id)) { %>
         <a href="/film/re-like/<%=films[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= films[i].likes.length %></span></a>
         <% } %>
@@ -56,7 +55,6 @@
         </div>
       </div>
       <div class="btns">
-
         <% if(useractorLikes.includes(actors[i].id)) { %>
         <a href="/actor/re-like/<%=actors[i].id %>/dash" class="fav like btn-act"><i class="fas fa-heart"></i> <span><%= actors[i].likes.length %></span></a>
         <% } %>

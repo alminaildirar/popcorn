@@ -1,10 +1,10 @@
 {
    "type": "mysql",
-   "host": "localhost",
+   "host": "us-cdbr-east-05.cleardb.net",
    "port": 3306,
-   "username": "root",
-   "password": "thecatkaju1234.",
-   "database": "popcorn",
+   "username": "bbfffae0cf1561",
+   "password": "5f9e79a17691ae8",
+   "database": "heroku_d915632cec1b1a1",
    "synchronize": true,
    "logging": false,
    "entities": [
