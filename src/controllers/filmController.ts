@@ -29,7 +29,7 @@ export const addFilm: RequestHandler = async (req, res) => {
     if(!req.files){
       imageurl = '/uploads/default.jpg'
     }else{
-      const imageName = req.files.image['name'];
+      const imageName = Math.random();
       const image = req.files.image['data'];
       fs.writeFileSync(uploadDir + '/' + imageName, image);
       imageurl = '/uploads/' + imageName;
@@ -246,7 +246,7 @@ export const updateFilm: RequestHandler = async (req, res) => {
     if(!req.files){
       imageurl = filmForImage.image;
     }else{
-      const imageName = req.files.image['name'];
+      const imageName = Math.random();
       const image = req.files.image['data'];
       fs.writeFileSync(uploadDir + '/' + imageName, image);
       imageurl = '/uploads/' + imageName;
