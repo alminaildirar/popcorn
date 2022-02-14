@@ -8,6 +8,10 @@ import { User } from '../entity/User';
 //Get Login Page
 export const getLogin: RequestHandler = (req, res) => {
   try {
+    const token = req.cookies.jwt;
+    if(token){
+      return res.redirect('/dash');
+    }
     res.status(200).render('login');
   } catch (Error) {
     throw new Error();
@@ -17,6 +21,10 @@ export const getLogin: RequestHandler = (req, res) => {
 //Get Register Page
 export const getRegister: RequestHandler = (req, res) => {
   try {
+    const token = req.cookies.jwt;
+    if(token){
+      return res.redirect('/dash');
+    }
     res.status(200).render('register');
   } catch (Error) {
     throw new Error();
